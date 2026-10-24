@@ -22,44 +22,47 @@ export function ServiceRows() {
           <SectionHeading id="services-title" before="TDL" accent={<TypedWords text="Core" />} after="services" onDark />
           <p className="mt-5 text-on-dark-muted">{wordpressCopy.servicesSub}</p>
         </header>
-
-        <ul className="mt-14 space-y-16 lg:mt-20 lg:space-y-24">
-          {services.map((s, i) => {
-            const flip = i % 2 === 1;
-            return (
-              <li key={s.slug} className="grid items-center lg:grid-cols-12">
-                {/* The frame fades in; the card follows 0.1 s later, sliding 16 px from the frame's side. */}
-                <Reveal y={0} className={`lg:col-span-8 lg:row-start-1 ${flip ? "lg:col-start-5" : "lg:col-start-1"}`}>
-                  <PhotoFrame
-                    frame={`service:${s.slug}`}
-                    icon={serviceIcons[s.slug]}
-                    sizes="(min-width: 64rem) 820px, 100vw"
-                    aspect="aspect-[3/2] lg:aspect-[16/9]"
-                    focus={flip ? "right" : "left"}
-                  />
-                </Reveal>
-                <Reveal
-                  y={0}
-                  x={flip ? 16 : -16}
-                  delay={0.1}
-                  className={`relative bg-coal p-8 shadow-[0_20px_40px_rgb(0_0_0/0.25)] lg:row-start-1 lg:col-span-4 lg:my-12 lg:p-10 ${flip ? "lg:col-start-1 lg:-mr-10" : "lg:col-start-9 lg:-ml-10"}`}
-                >
-                  <h3 className="text-2xl text-white lg:text-[1.625rem]">{s.name}</h3>
-                  <div aria-hidden="true" className={`mt-5 h-px w-2/3 bg-white/70 ${flip ? "lg:-ml-16" : "lg:-mr-16 lg:ml-auto"}`} />
-                  <p className="mt-5 leading-[1.85] text-on-dark-muted">{s.lead}</p>
-                  <Link
-                    href={`/services/${s.slug}`}
-                    className="mt-6 inline-flex items-center gap-2 font-bold text-accent-on-dark hover:underline"
-                  >
-                    Read about {inSentence(s.name)}
-                    <ArrowRight size={18} aria-hidden="true" />
-                  </Link>
-                </Reveal>
-              </li>
-            );
-          })}
-        </ul>
+        <ServiceRowList className="mt-14 lg:mt-20" />
       </div>
     </section>
+  );
+}
+
+/** The seven rows on their own, for the home band above and the /services index. `as` sets the rows' heading level. */
+export function ServiceRowList({ className = "", as: Heading = "h3" }: { className?: string; as?: "h2" | "h3" }) {
+  return (
+    <ul className={`space-y-16 lg:space-y-24 ${className}`}>
+      {services.map((s, i) => {
+        const flip = i % 2 === 1;
+        return (
+          <li key={s.slug} className="grid items-center lg:grid-cols-12">
+            {/* The frame fades in; the card follows 0.1 s later, sliding 16 px from the frame's side. */}
+            <Reveal y={0} className={`lg:col-span-8 lg:row-start-1 ${flip ? "lg:col-start-5" : "lg:col-start-1"}`}>
+              <PhotoFrame
+                frame={`service:${s.slug}`}
+                icon={serviceIcons[s.slug]}
+                sizes="(min-width: 64rem) 820px, 100vw"
+                aspect="aspect-[3/2] lg:aspect-[16/9]"
+                focus={flip ? "right" : "left"}
+              />
+            </Reveal>
+            <Reveal
+              y={0}
+              x={flip ? 16 : -16}
+              delay={0.1}
+              className={`relative bg-coal p-8 shadow-[0_20px_40px_rgb(0_0_0/0.25)] lg:row-start-1 lg:col-span-4 lg:my-12 lg:p-10 ${flip ? "lg:col-start-1 lg:-mr-10" : "lg:col-start-9 lg:-ml-10"}`}
+            >
+              <Heading className="text-2xl text-white lg:text-[1.625rem]">{s.name}</Heading>
+              <div aria-hidden="true" className={`mt-5 h-px w-2/3 bg-white/70 ${flip ? "lg:-ml-16" : "lg:-mr-16 lg:ml-auto"}`} />
+              <p className="mt-5 leading-[1.85] text-on-dark-muted">{s.lead}</p>
+              <Link href={`/services/${s.slug}`} className="mt-6 inline-flex items-center gap-2 font-bold text-accent-on-dark hover:underline">
+                Read about {inSentence(s.name)}
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </Reveal>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

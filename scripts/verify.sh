@@ -31,7 +31,7 @@ export PLACEHOLDER_PRESENTATION_BUILD= NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POST
 WORK="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/tdl-verify-$$")"
 mkdir -p "$WORK"
 # Routes that exist so far; grows with docs/PLAN.md §8.
-ROUTES="/"
+ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions"
 RESULTS=()
 FAILED=0
 
@@ -76,7 +76,8 @@ summary() {
 
 # ── Tier 1 ─────────────────────────────────────────────────────────────────────────────────────────────────
 step "lint (0 errors)"        npx eslint
-step "typecheck"              npx tsc --noEmit
+# Route types (PageProps<...>) are generated; a new route fails typecheck until they are.
+step "typecheck"              bash -c "npx next typegen >/dev/null && npx tsc --noEmit"
 step "boundary check"         node scripts/check-adapter.mjs
 
 if [ "$TIER" -lt 2 ]; then summary; exit $FAILED; fi

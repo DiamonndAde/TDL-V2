@@ -97,3 +97,17 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
 - **Stock dropped from the page.** Beside the warm generated set it was cooler and higher-contrast, and it duplicated two row scenes. Records kept.
 - `PhotoFrame` prefers, in order: a TDL photograph, then a generated frame image, then stock (empty now), then the brand panel. The frame type is renamed `StockFrame` → `DemoFrame`.
 - **Why TDL portrait wired** (owner's OK). From `sm` to `lg` the frame is 4:3, and the bottom-left badge covered the man's hands, so there the badge moves to the top-left. The first try clipped the top of his head at 768, so the 4:3 crop also moves up the portrait (`sm:max-lg:[object-position:50%_25%]`, through a new `imageClassName` on `PhotoFrame`). Checked clear of everyone at 390, 640, 768, 1023 and 1280.
+
+## 2026-10-24 — Services (step 7)
+
+- **Inner-page parts,** built from the home page's own pieces since WordPress had no inner pages:
+  - `PageHeader`: a mist band, the page's one H1, an optional eyebrow, lead, actions and a frame beside it from `lg`.
+  - `CtaBand`: a charcoal close with the response promise, "Partner with us", "Prefer a form? Become a client" and the phone.
+  - `FeatureCard`: the Why-TDL card, now shared with Why TDL itself.
+- **`/services`** reuses the home page's seven rows (`ServiceRowList`, headings at H2 there) under a page header.
+- **`/services/[slug]`**, seven static pages from one template:
+  - The eyebrow is the service name and the H1 is what the service takes off the buyer's desk (v1 copy, Q23).
+  - The frame is the service's home-row image (or its panel).
+  - Sub-services are cards, the close is scoped (the WhatsApp message and `/become-a-client?service=` carry the service), and the other six are linked cards.
+  - Unknown slugs 404 through `notFound()`. `dynamicParams = false` is not available under Cache Components (bundled docs), so the build lists a `◐` shell for `/services/[slug]`.
+- `verify.sh` runs `next typegen` before `tsc`: route types (`PageProps<'/services/[slug]'>`) are generated, and a new route fails typecheck until they are.

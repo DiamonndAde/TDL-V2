@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { ShieldCheck, Target, UserCheck } from "lucide-react";
 import { figures, wordpressCopy } from "@/content/facts";
 import { Reveal } from "@/components/motion/reveal";
 import { TypedWords } from "@/components/motion/typed-words";
+import { FeatureCard } from "@/components/ui/feature-card";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -34,20 +34,13 @@ export function WhyTdl() {
         <div>
           <SectionHeading id="why-title" before="Why" accent={<TypedWords text="Total Data" />} after="Limited?" />
           <Reveal as="ul" items=":scope > li" className="mt-10 grid gap-6 sm:grid-cols-2">
-            {wordpressCopy.why.map((c, i) => {
-              const Icon = icons[i];
-              return (
-                <li key={c.title} className="relative rounded-lg bg-white p-8 text-center shadow-[0_15px_40px_rgb(15_23_42/0.08)]">
-                  <Icon className="mx-auto size-11 text-accent-strong" strokeWidth={1.5} aria-hidden="true" />
-                  <h3 className="mt-5 font-display text-xl font-medium text-navy">
-                    <Link href={c.href} className="after:absolute after:inset-0 hover:text-accent-strong">
-                      {c.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-3 font-display text-[0.9375rem] leading-relaxed text-ink/80">{c.text}</p>
-                </li>
-              );
-            })}
+            {wordpressCopy.why.map((c, i) => (
+              <li key={c.title}>
+                <FeatureCard icon={icons[i]} title={c.title} href={c.href}>
+                  {c.text}
+                </FeatureCard>
+              </li>
+            ))}
           </Reveal>
         </div>
       </div>
