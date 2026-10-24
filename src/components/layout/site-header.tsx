@@ -20,7 +20,7 @@ export function SiteHeader() {
         </nav>
         <div className="hidden items-center gap-5 lg:flex xl:gap-6">
           <StaffLoginLink className="text-[0.8125rem] font-bold text-navy" />
-          <PartnerCta variant="compact" />
+          <PartnerCta location="header" variant="compact" />
         </div>
         <div className="ml-auto lg:hidden">
           <MobileMenu>
@@ -29,7 +29,7 @@ export function SiteHeader() {
                 <NavLinks variant="menu" />
               </nav>
               <div className="flex flex-col items-start gap-6 py-8">
-                <PartnerCta variant="pill" size="md" />
+                <PartnerCta location="menu" variant="pill" size="md" />
                 <StaffLoginLink className="text-base font-bold text-navy" />
               </div>
             </div>

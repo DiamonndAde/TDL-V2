@@ -18,6 +18,7 @@ export function ButtonPill({
   tone = "accent",
   size = "md",
   className = "",
+  onClick,
 }: {
   href: string;
   children: ReactNode;
@@ -26,6 +27,8 @@ export function ButtonPill({
   tone?: "accent" | "light";
   size?: "md" | "lg";
   className?: string;
+  /** Only from a client component (an analytics click, for instance). */
+  onClick?: () => void;
 }) {
   const fill =
     tone === "accent"
@@ -55,13 +58,13 @@ export function ButtonPill({
   const cls = `group inline-flex items-center rounded-full ${pill} ${className}`;
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} className={cls}>
+      <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} onClick={onClick} className={cls}>
         {inner}
       </a>
     );
   }
   return (
-    <Link href={href} aria-label={ariaLabel} className={cls}>
+    <Link href={href} aria-label={ariaLabel} onClick={onClick} className={cls}>
       {inner}
     </Link>
   );

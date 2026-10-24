@@ -1,5 +1,9 @@
+"use client";
+
 import { company } from "@/content/facts";
 import type { ServiceSlug } from "@/content/services";
+import type { CtaLocation } from "@/lib/analytics/events";
+import { track } from "@/lib/analytics/track";
 import { ButtonPill } from "./button-pill";
 import { WhatsAppMark } from "./whatsapp-mark";
 
@@ -13,14 +17,17 @@ import { WhatsAppMark } from "./whatsapp-mark";
  * WCAG 2.5.3 requires.
  *
  * `variant`: "pill" is the WordPress button (label plus arrow circle) for heroes and bands; "compact" is a single
- * pill for the header.
+ * pill for the header. `location` says where on the site the click came from (the `whatsapp_clicked` event); as with
+ * the ATS, we see the click and never the conversation that follows. `track()` is a no-op without a key and consent.
  */
 export function PartnerCta({
+  location,
   variant = "pill",
   service,
   size = "lg",
   className = "",
 }: {
+  location: CtaLocation;
   variant?: "pill" | "compact";
   /** On a service page: the slug and display name, so the message carries it. */
   service?: { slug: ServiceSlug; name: string };
@@ -30,6 +37,7 @@ export function PartnerCta({
   const message = service ? company.whatsappMessage.service(service.name) : company.whatsappMessage.general;
   const href = `${company.whatsappHref}?text=${encodeURIComponent(message)}`;
   const ariaLabel = "Partner with us on WhatsApp";
+  const onClick = () => track({ name: "whatsapp_clicked", location, service: service?.slug ?? "none" });
 
   if (variant === "compact") {
     return (
@@ -38,6 +46,7 @@ export function PartnerCta({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={ariaLabel}
+        onClick={onClick}
         className={`inline-flex h-11 items-center gap-2 rounded-full bg-accent-strong px-5 text-[0.9375rem] font-bold leading-none text-white transition-colors duration-200 hover:bg-accent-strong-hover ${className}`}
       >
         <WhatsAppMark size={17} />
@@ -46,7 +55,7 @@ export function PartnerCta({
     );
   }
   return (
-    <ButtonPill href={href} external ariaLabel={ariaLabel} size={size} className={className}>
+    <ButtonPill href={href} external ariaLabel={ariaLabel} onClick={onClick} size={size} className={className}>
       <WhatsAppMark />
       Partner with us
     </ButtonPill>

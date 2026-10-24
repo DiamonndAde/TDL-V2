@@ -43,7 +43,7 @@ export function Hero() {
             {headline.sub}
           </p>
           <div className="hero-rise mt-9 [--d:150ms]">
-            <PartnerCta />
+            <PartnerCta location="hero" />
           </div>
         </div>
       </div>

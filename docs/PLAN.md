@@ -162,7 +162,7 @@ The reveal is one client component (`<Reveal>`), loaded with `LazyMotion`. Its b
 8. `feat(pages):` about-us, work, certifications, privacy, cookies, insights.
 9. `feat(contact):` contact with the brochure QR and `/brochure`; become-a-client form and action; form test.
 10. `feat(careers):` careers with the recruitment adapter and talent-pool form; provider test and boundary check.
-11. `feat(analytics):` consent banner and PostHog, off by default; consent and canary masking tests.
+11. `feat(analytics):` consent banner and PostHog, off by default; consent and canary masking tests. **Done 2026-10-25.**
 12. Tier 3 in full; fix what it finds; report with first-load per route and Lighthouse.
 
 The repo has no git remote yet, so "Tier 2 before every push" applies once one is added.

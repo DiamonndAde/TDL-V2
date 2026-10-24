@@ -2,6 +2,7 @@ import Link from "next/link";
 import { company } from "@/content/facts";
 import { services } from "@/content/services";
 import { PartnerCta } from "@/components/ui/partner-cta";
+import { ConsentReopen } from "./consent-reopen";
 import { CopyrightYear } from "./copyright-year";
 import { Logo } from "./logo";
 import { StaffLoginLink } from "./site-header";
@@ -29,7 +30,7 @@ export function SiteFooter() {
               {company.email}
             </a>
           </address>
-          <PartnerCta size="md" className="mt-8" />
+          <PartnerCta location="footer" size="md" className="mt-8" />
         </div>
 
         <FooterList title="Services" items={services.map((s) => ({ href: `/services/${s.slug}`, label: s.name }))} />
@@ -73,6 +74,7 @@ export function SiteFooter() {
             <Link href="/cookies-policy" className="hover:text-white hover:underline">
               Cookies policy
             </Link>
+            <ConsentReopen />
           </p>
         </div>
       </div>

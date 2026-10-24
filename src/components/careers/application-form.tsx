@@ -7,6 +7,9 @@ import { ChoiceRow, Field, Input, Select, Textarea } from "@/components/ui/field
 import { company } from "@/content/facts";
 import { services } from "@/content/services";
 import { submitApplication, type ApplyResult } from "@/app/careers/actions";
+import { track } from "@/lib/analytics/track";
+import { useFieldTracking } from "@/lib/analytics/use-field-tracking";
+import type { FieldName } from "@/lib/analytics/events";
 import { parseApplication, type Application } from "./schema";
 
 const resolver: Resolver<Application> = async (values) => {
@@ -23,12 +26,15 @@ const resolver: Resolver<Application> = async (values) => {
 /**
  * The talent pool (Q14), ported from v1, logic unchanged: one short form for people whose role is not listed on the
  * openings board. The server action hands the draft to whichever recruitment provider is configured and stores
- * nothing (src/lib/recruitment). Analytics instrumentation returns with the analytics port (step 11).
+ * nothing (src/lib/recruitment). Analytics records field order and outcome only, never a value.
  */
 export function ApplicationForm() {
   "use no memo";
   const [result, setResult] = useState<ApplyResult | null>(null);
   const [pending, startTransition] = useTransition();
+  // Field order for the funnel: the index makes "how far did they get" answerable without reading anything.
+  const FIELDS: FieldName[] = ["name", "email", "phone", "location", "area", "message", "consent"];
+  const field = useFieldTracking("talent_pool", FIELDS, () => track({ name: "talent_pool_started" }));
 
   const { register, handleSubmit, formState } = useForm<Application>({
     resolver,
@@ -47,38 +53,45 @@ export function ApplicationForm() {
 
   return (
     <form
-      onSubmit={handleSubmit((d) =>
-        startTransition(async () => {
-          // An unreachable server action throws rather than returning {ok:false}; without this the visitor is left on
-          // "Sending" with no message.
-          let r: ApplyResult;
-          try {
-            r = await submitApplication(d);
-          } catch {
-            r = { ok: false, error: "We could not reach our server. Check your connection and try again.", reason: "network" };
-          }
-          setResult(r);
-        }),
+      onSubmit={handleSubmit(
+        (d) =>
+          startTransition(async () => {
+            // An unreachable server action throws rather than returning {ok:false}; without this the visitor is left
+            // on "Sending" with no message. The reason tracked is the enum value, never the error's own message.
+            let r: ApplyResult;
+            try {
+              r = await submitApplication(d);
+            } catch {
+              r = { ok: false, error: "We could not reach our server. Check your connection and try again.", reason: "network" };
+            }
+            setResult(r);
+            if (r.ok) track({ name: "talent_pool_submitted", fields_completed: countAnswered(d) });
+            else track({ name: "talent_pool_failed", reason: r.reason });
+          }),
+        (errs) => {
+          const first = FIELDS.find((f) => f in errs);
+          if (first) track({ name: "form_validation_failed", form: "talent_pool", field: first, reason: "invalid" });
+        },
       )}
       noValidate
       className="space-y-7"
     >
       <div className="grid gap-7 md:grid-cols-2">
         <Field label="Your name" htmlFor="ap-name" error={errors.name?.message}>
-          <Input id="ap-name" autoComplete="name" invalid={!!errors.name} {...register("name")} />
+          <Input id="ap-name" autoComplete="name" invalid={!!errors.name} {...register("name")} onFocus={field.onFocus("name")} onBlur={field.onBlur("name")} />
         </Field>
         <Field label="Email" htmlFor="ap-email" error={errors.email?.message}>
-          <Input id="ap-email" type="email" inputMode="email" autoComplete="email" invalid={!!errors.email} {...register("email")} />
+          <Input id="ap-email" type="email" inputMode="email" autoComplete="email" invalid={!!errors.email} {...register("email")} onFocus={field.onFocus("email")} onBlur={field.onBlur("email")} />
         </Field>
         <Field label="Phone" htmlFor="ap-phone" error={errors.phone?.message}>
-          <Input id="ap-phone" type="tel" inputMode="tel" autoComplete="tel" invalid={!!errors.phone} {...register("phone")} />
+          <Input id="ap-phone" type="tel" inputMode="tel" autoComplete="tel" invalid={!!errors.phone} {...register("phone")} onFocus={field.onFocus("phone")} onBlur={field.onBlur("phone")} />
         </Field>
         <Field label="Where are you based?" htmlFor="ap-location" hint="City or state." error={errors.location?.message}>
-          <Input id="ap-location" autoComplete="address-level2" invalid={!!errors.location} {...register("location")} />
+          <Input id="ap-location" autoComplete="address-level2" invalid={!!errors.location} {...register("location")} onFocus={field.onFocus("location")} onBlur={field.onBlur("location")} />
         </Field>
       </div>
       <Field label="Area of work" htmlFor="ap-area" error={errors.area?.message}>
-        <Select id="ap-area" defaultValue="" invalid={!!errors.area} {...register("area")}>
+        <Select id="ap-area" defaultValue="" invalid={!!errors.area} {...register("area")} onFocus={field.onFocus("area")} onBlur={field.onBlur("area")}>
           <option value="" disabled>
             Choose one
           </option>
@@ -91,7 +104,7 @@ export function ApplicationForm() {
         </Select>
       </Field>
       <Field label="Anything we should know" htmlFor="ap-message" hint="Experience, the kind of role you want, a link to your CV. Optional." error={errors.message?.message}>
-        <Textarea id="ap-message" invalid={!!errors.message} {...register("message")} />
+        <Textarea id="ap-message" invalid={!!errors.message} {...register("message")} onFocus={field.onFocus("message")} onBlur={field.onBlur("message")} />
       </Field>
       <div className="border-t border-navy/10">
         <ChoiceRow
@@ -121,4 +134,11 @@ export function ApplicationForm() {
       </Button>
     </form>
   );
+}
+
+/** How many questions were answered. A count, never the answers. */
+function countAnswered(d: Application): number {
+  return (["name", "email", "phone", "location", "area", "message"] as const).filter(
+    (k) => typeof d[k] === "string" && (d[k] as string).trim().length > 0,
+  ).length;
 }

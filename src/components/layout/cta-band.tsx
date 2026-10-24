@@ -27,7 +27,7 @@ export function CtaBand({
         </h2>
         <p className="mt-5 max-w-[38rem] text-on-dark-muted">{lead ?? process.responsePromise}</p>
         <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-          <PartnerCta service={service} />
+          <PartnerCta location={service ? "service_close" : "close"} service={service} />
           <Link href={formHref} className="font-bold text-white underline decoration-accent-on-dark decoration-2 underline-offset-[6px] hover:text-accent-on-dark">
             Prefer a form? Become a client
           </Link>

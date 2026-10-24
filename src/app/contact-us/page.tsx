@@ -73,7 +73,7 @@ export default function ContactPage() {
   return (
     <main id="main">
       <JsonLd include={["localBusiness"]} />
-      <PageHeader eyebrow="Contact" title="Call, message, or come to" accent="Ilupeju." lead={process.responsePromise} actions={<PartnerCta />} />
+      <PageHeader eyebrow="Contact" title="Call, message, or come to" accent="Ilupeju." lead={process.responsePromise} actions={<PartnerCta location="contact" />} />
 
       <section aria-label="Ways to reach us" className="bg-white">
         <div className="container-site section-y">
@@ -111,7 +111,7 @@ export default function ContactPage() {
             {process.responsePromise}
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-            <PartnerCta />
+            <PartnerCta location="contact" />
             <Link href="/become-a-client" className="font-bold text-white underline decoration-accent-on-dark decoration-2 underline-offset-[6px] hover:text-accent-on-dark">
               Use the form
             </Link>

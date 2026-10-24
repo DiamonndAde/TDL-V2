@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { HeartHandshake, Sparkles, UserSearch } from "lucide-react";
 import { careers } from "@/content/about";
 import { ApplicationForm } from "@/components/careers/application-form";
+import { OpeningsLink } from "@/components/careers/openings-link";
 import { CtaBand } from "@/components/layout/cta-band";
 import { PageHeader } from "@/components/layout/page-header";
+import { PageViewed } from "@/components/layout/page-viewed";
 import { Reveal } from "@/components/motion/reveal";
-import { ButtonPill } from "@/components/ui/button-pill";
 import { FeatureCard } from "@/components/ui/feature-card";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -29,6 +30,7 @@ export default function CareersPage() {
   const board = openingsLinkFor("totaldatalimited.com/careers");
   return (
     <main id="main">
+      <PageViewed event={{ name: "careers_viewed" }} />
       <PageHeader
         eyebrow="Careers"
         title="Roles with us, and with the companies"
@@ -54,9 +56,7 @@ export default function CareersPage() {
               portal. You apply there.
             </p>
             <div className="mt-8">
-              <ButtonPill href={board} external ariaLabel="See open roles on our recruitment portal (opens in a new tab)">
-                See open roles
-              </ButtonPill>
+              <OpeningsLink href={board} />
             </div>
           </div>
         </section>

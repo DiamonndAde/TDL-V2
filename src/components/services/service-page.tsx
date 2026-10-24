@@ -28,7 +28,7 @@ export function ServicePage({ service }: { service: Service }) {
         lead={service.lead}
         actions={
           <>
-            <PartnerCta service={scoped} />
+            <PartnerCta location="service_hero" service={scoped} />
             <Link href={`/become-a-client?service=${service.slug}`} className="font-bold text-accent-strong underline decoration-2 underline-offset-[6px]">
               Prefer a form?
             </Link>
