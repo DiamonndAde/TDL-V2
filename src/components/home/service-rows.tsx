@@ -4,6 +4,8 @@ import { wordpressCopy } from "@/content/facts";
 import { services } from "@/content/services";
 import { inSentence } from "@/lib/text";
 import { serviceIcons } from "@/components/services/service-icons";
+import { Reveal } from "@/components/motion/reveal";
+import { TypedWords } from "@/components/motion/typed-words";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -17,7 +19,7 @@ export function ServiceRows() {
     <section aria-labelledby="services-title" className="on-dark bg-charcoal">
       <div className="container-site section-y">
         <header className="mx-auto max-w-3xl text-center">
-          <SectionHeading id="services-title" before="TDL" accent="Core" after="services" onDark />
+          <SectionHeading id="services-title" before="TDL" accent={<TypedWords text="Core" />} after="services" onDark />
           <p className="mt-5 text-on-dark-muted">{wordpressCopy.servicesSub}</p>
         </header>
 
@@ -26,15 +28,20 @@ export function ServiceRows() {
             const flip = i % 2 === 1;
             return (
               <li key={s.slug} className="grid items-center lg:grid-cols-12">
-                <PhotoFrame
-                  frame={`service:${s.slug}`}
-                  icon={serviceIcons[s.slug]}
-                  sizes="(min-width: 64rem) 820px, 100vw"
-                  aspect="aspect-[3/2] lg:aspect-[16/9]"
-                  focus={flip ? "right" : "left"}
-                  className={`lg:col-span-8 lg:row-start-1 ${flip ? "lg:col-start-5" : "lg:col-start-1"}`}
-                />
-                <div
+                {/* The frame fades in; the card follows 0.1 s later, sliding 16 px from the frame's side. */}
+                <Reveal y={0} className={`lg:col-span-8 lg:row-start-1 ${flip ? "lg:col-start-5" : "lg:col-start-1"}`}>
+                  <PhotoFrame
+                    frame={`service:${s.slug}`}
+                    icon={serviceIcons[s.slug]}
+                    sizes="(min-width: 64rem) 820px, 100vw"
+                    aspect="aspect-[3/2] lg:aspect-[16/9]"
+                    focus={flip ? "right" : "left"}
+                  />
+                </Reveal>
+                <Reveal
+                  y={0}
+                  x={flip ? 16 : -16}
+                  delay={0.1}
                   className={`relative bg-coal p-8 shadow-[0_20px_40px_rgb(0_0_0/0.25)] lg:row-start-1 lg:col-span-4 lg:my-12 lg:p-10 ${flip ? "lg:col-start-1 lg:-mr-10" : "lg:col-start-9 lg:-ml-10"}`}
                 >
                   <h3 className="text-2xl text-white lg:text-[1.625rem]">{s.name}</h3>
@@ -47,7 +54,7 @@ export function ServiceRows() {
                     Read about {inSentence(s.name)}
                     <ArrowRight size={18} aria-hidden="true" />
                   </Link>
-                </div>
+                </Reveal>
               </li>
             );
           })}

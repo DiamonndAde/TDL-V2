@@ -1,6 +1,8 @@
 import { Handshake } from "lucide-react";
 import { wordpressCopy } from "@/content/facts";
 import { ButtonPill } from "@/components/ui/button-pill";
+import { Reveal } from "@/components/motion/reveal";
+import { TypedWords } from "@/components/motion/typed-words";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -12,23 +14,24 @@ export function AboutBlock() {
   return (
     <section aria-labelledby="about-title" className="bg-white">
       <div className="container-site grid items-center gap-10 py-16 lg:grid-cols-2 lg:gap-16 lg:py-0">
-        <div className="lg:border-l-2 lg:border-accent/60 lg:py-24 lg:pl-12">
-          <SectionHeading id="about-title" before="About" accent="TDL" />
+        <Reveal className="lg:border-l-2 lg:border-accent/60 lg:py-24 lg:pl-12">
+          <SectionHeading id="about-title" before="About" accent={<TypedWords text="TDL" />} />
           <p className="mt-6 max-w-[30rem] text-[1.0625rem]">{wordpressCopy.about}</p>
-        </div>
-        <PhotoFrame
-          frame="about"
-          icon={Handshake}
-          aspect="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[36rem]"
-          sizes="(min-width: 64rem) 600px, 100vw"
-          className="-mx-5 sm:-mx-8 lg:mx-0 lg:-mr-8 xl:-mr-[calc((100vw-75rem)/2+2rem)]"
-        >
-          <div className="absolute bottom-6 left-6 lg:bottom-10 lg:left-10">
-            <ButtonPill href="/about-us" size="md">
-              Learn more
-            </ButtonPill>
-          </div>
-        </PhotoFrame>
+        </Reveal>
+        <Reveal y={0} className="-mx-5 sm:-mx-8 lg:mx-0 lg:-mr-8 lg:h-full xl:-mr-[calc((100vw-75rem)/2+2rem)]">
+          <PhotoFrame
+            frame="about"
+            icon={Handshake}
+            aspect="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[36rem]"
+            sizes="(min-width: 64rem) 600px, 100vw"
+          >
+            <div className="absolute bottom-6 left-6 lg:bottom-10 lg:left-10">
+              <ButtonPill href="/about-us" size="md">
+                Learn more
+              </ButtonPill>
+            </div>
+          </PhotoFrame>
+        </Reveal>
       </div>
     </section>
   );

@@ -84,6 +84,7 @@ if [ "$TIER" -lt 2 ]; then summary; exit $FAILED; fi
 # ── Tier 2 ─────────────────────────────────────────────────────────────────────────────────────────────────
 if ! step "production build (shipping config)" build; then summary; exit 1; fi
 step "scroll regression (+ header stays on screen)"       env SCROLL_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
+step "reveal test: no JS, reduced motion, motion on (above the fold never hidden, entrances once), marquee, carousel"       bash scripts/serve-and-run.sh python scripts/reveal-proof.py
 kill_port 3131
 # shellcheck disable=SC2086
 step "first-load JS, every route" node scripts/first-load.mjs $ROUTES

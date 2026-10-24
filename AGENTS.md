@@ -34,7 +34,7 @@ The previous build (`../tdl-website`) supplies content, features, rules and test
 - `next lint` is gone. `npm run lint` runs ESLint and `next build` does not lint.
 - `next build` doesn't print first-load JS. `scripts/first-load.mjs` is the measurement.
 - `next/font/google` self-hosts the fonts. No runtime request to Google.
-- **Motion:** the `motion` package (`motion/react`, `LazyMotion` + `m` + `domAnimation`). **No GSAP, no Lenis, no smooth-scroll library, no scroll-jacking.** The WordPress site has no smooth scrolling (audit §5), so the only scroll behaviour is CSS `scroll-behavior: smooth`, for in-page anchors, and off under reduced motion.
+- **Motion:** the `motion` package: `inView` (fire once on entering view) and `useAnimate` from `motion/react-mini` (WAAPI only), in `src/components/motion/`. Not `whileInView`: it renders its starting state on the server, which would ship content at opacity 0 (docs/DESIGN-DECISIONS.md, step 6). The hero is pure CSS. **No GSAP, no Lenis, no smooth-scroll library, no scroll-jacking.** The WordPress site has no smooth scrolling (audit §5), so the only scroll behaviour is CSS `scroll-behavior: smooth`, for in-page anchors, and off under reduced motion.
 - **Icons:** `lucide-react`, in brand colours. The WhatsApp mark is the one inline SVG (Lucide has no brand marks). No generated PNG icons.
 - Forms: react-hook-form + zod (`zod/mini`). QR: `qrcode`, rendered at build time. Analytics: `posthog-js`, loaded only after consent and only when a key is set.
 
@@ -63,7 +63,7 @@ Buttons follow the WordPress pattern: a pill label with a separate round arrow (
 
 ## Motion (recreating WordPress's motion, quicker and safer)
 
-- Section entrances use `whileInView` with `viewport={{ once: true }}`: opacity plus a 12–24 px offset, 0.4–0.6 s, ease-out, stagger ≤ 0.08 s. The table of which sections animate and how is in `docs/PLAN.md` §4. No attention-seekers (no `tada`, no `zoomInDown`, no hover "hang") and no 100%-height translates.
+- Section entrances use `<Reveal>` (in view, once): opacity plus a 12–24 px offset, 0.4–0.6 s, ease-out, stagger ≤ 0.08 s. The table of which sections animate and how is in `docs/PLAN.md` §4. No attention-seekers (no `tada`, no `zoomInDown`, no hover "hang") and no 100%-height translates.
 - **Content is never hidden without JavaScript.** The hidden starting state applies only once JS is running and motion is allowed. Above-the-fold entrances are pure CSS from first paint, never wait for JS, and **never touch the LCP element** (a fade from opacity 0 delays LCP by its full duration). The reveal test enforces this.
 - **A CSS entrance ends on the base style.** Hide during the delay with a `backwards` fill and let the animation end on the element's own style; never rely on a `forwards` fill for the visible state (float rounding at the end can land on the start keyframe).
 - **The headline paints with the HTML.** The typed part is server-rendered, CSS-animated per character from first paint, with no hydration wait. The full sentence is in the DOM for crawlers and screen readers, and the animated copy is `aria-hidden`.
