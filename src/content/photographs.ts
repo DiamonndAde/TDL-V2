@@ -20,5 +20,5 @@ export interface Photograph {
 /** The home hero slider, in slide order. */
 export const heroPhotographs: Photograph[] = [];
 
-/** Single frames, keyed like `StockFrame` in placeholders.ts. */
+/** Single frames, keyed like `DemoFrame` in placeholders.ts. */
 export const framePhotographs: Partial<Record<string, Photograph>> = {};

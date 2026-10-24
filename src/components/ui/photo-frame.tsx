@@ -1,12 +1,13 @@
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import { framePhotographs } from "@/content/photographs";
-import { stock, type StockFrame } from "@/content/placeholders";
+import { frameImages, stock, type DemoFrame } from "@/content/placeholders";
 import { isDemoBuild } from "@/lib/build-mode";
 
 /**
  * A photograph frame. Source, in order: TDL's own photograph for this frame (photographs.ts, Q18/Q27); in a
- * presentation build only, the demo stock registered for it (placeholders.ts, no caption or credit on the page);
+ * presentation build only, the demo image registered for it (placeholders.ts: generated, or stock; no caption or
+ * credit on the page);
  * otherwise a designed brand panel: navy, the logo's lime arc, and an icon that says what the frame is about.
  * Never an empty box, never stock in a shipping build.
  *
@@ -21,7 +22,7 @@ export function PhotoFrame({
   className = "",
   children,
 }: {
-  frame: StockFrame;
+  frame: DemoFrame;
   icon: LucideIcon;
   /** Tailwind aspect class(es) for the frame. */
   aspect?: string;
@@ -33,7 +34,7 @@ export function PhotoFrame({
   children?: React.ReactNode;
 }) {
   const own = framePhotographs[frame];
-  const demo = !own && isDemoBuild ? stock[frame] : undefined;
+  const demo = !own && isDemoBuild ? (frameImages[frame] ?? stock[frame]) : undefined;
   const photo = own
     ? { src: own.src, width: own.width, height: own.height, alt: own.alt, position: own.position }
     : demo

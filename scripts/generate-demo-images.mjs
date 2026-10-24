@@ -34,6 +34,12 @@ const FRAMING =
   "Wide landscape composition with the people in the middle third of the frame; a full-bleed photograph with no " +
   "borders, bars or blank bands.";
 const EQUIPMENT = "No lettering, logos or brand marks on any equipment, including the backs of monitors and laptop lids.";
+// Portrait frames (Why TDL, owner 2026-10-24): v1's framing line is landscape-specific, so a portrait one replaces it.
+// The base prompt stays word for word (owner's instruction), including its closing "landscape."; the 1024x1536
+// canvas sets the shape.
+const PORTRAIT_FRAMING =
+  "Tall portrait composition with both people inside the centre of the frame; a full-bleed photograph with no " +
+  "borders, bars or blank bands.";
 
 /** One scene per frame, matched to what the frame is about. ids are the frame keys in src/content/placeholders.ts. */
 export const SCENES = [
@@ -46,9 +52,18 @@ export const SCENES = [
   { id: "service:business-advisory", scene: "An advisory meeting: a senior consultant and two business owners around a small round table, one owner explaining with her hands, notebooks and coffee cups on the table." },
   { id: "service:technology-solutions", scene: "A software team at work: three developers at a long desk, two discussing something on a monitor angled away from the camera, the third typing on a laptop." },
   { id: "why", scene: "A client meeting at a conference table: a consultant walking two clients through a printed proposal held at an angle, everyone attentive, a window behind them." },
+  // Extras run only when named with --only.
+  {
+    id: "why-portrait",
+    extra: true,
+    size: "1024x1536",
+    framing: PORTRAIT_FRAMING,
+    scene:
+      "A client meeting between two people seated close together at a small table, both inside the centre of the frame, one walking the other through a printed proposal held at an angle. One wears a burgundy top, the other a light green shirt; no navy suits and no black blazers.",
+  },
 ];
 
-export const promptFor = (s) => `${BASE_PROMPT} Scene: ${s.scene} ${FRAMING} ${EQUIPMENT}`;
+export const promptFor = (s) => `${BASE_PROMPT} Scene: ${s.scene} ${s.framing ?? FRAMING} ${EQUIPMENT}`;
 const fileId = (id) => id.replace(/^service:/, "service-");
 
 function readKey(envFile) {
@@ -82,7 +97,7 @@ function args(argv) {
 
 async function main() {
   const opt = args(process.argv.slice(2));
-  const scenes = opt.only ? SCENES.filter((s) => opt.only.includes(s.id)) : SCENES;
+  const scenes = opt.only ? SCENES.filter((s) => opt.only.includes(s.id)) : SCENES.filter((s) => !s.extra);
   if (opt.only && scenes.length !== opt.only.length) throw new Error("unknown scene id in --only");
   if (scenes.length > opt.max) {
     console.error(`Refusing: this run would make ${scenes.length} images and the limit is ${opt.max}. Nothing generated.`);
@@ -110,7 +125,7 @@ async function main() {
     const res = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ model: MODEL, prompt, size: SIZE, quality: opt.quality, n: 1, output_format: "png" }),
+      body: JSON.stringify({ model: MODEL, prompt, size: s.size ?? SIZE, quality: opt.quality, n: 1, output_format: "png" }),
     });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) {
@@ -131,7 +146,7 @@ async function main() {
     const cost = textIn * PRICE.textIn + imageIn * PRICE.imageIn + imageOut * PRICE.imageOut;
     runCost += cost;
     dearest = Math.max(dearest, cost);
-    manifest.images.push({ file, id: s.id, round: opt.round, quality: opt.quality, model: MODEL, size: SIZE, prompt,
+    manifest.images.push({ file, id: s.id, round: opt.round, quality: opt.quality, model: MODEL, size: s.size ?? SIZE, prompt,
       usage: u, costUsd: Number(cost.toFixed(5)), seconds: Math.round((Date.now() - started) / 1000), at: new Date().toISOString() });
     writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
     console.log(`${file}  ${imageOut} output tokens  $${cost.toFixed(4)}  ${Math.round((Date.now() - started) / 1000)} s`);

@@ -15,7 +15,7 @@ Shipping builds show TDL's own photographs, real client logos and the TDL logo, 
 - `npm run test:guard` proves the rule under eight environments. It also proves that the shipping build's HTML and RSC output contain no `/placeholders/` file and no `data-demo` marker.
 - Named-person frames (testimonial executives, leadership, board) never show a stock or generated face; they show an initials monogram. No demo image ever sits in a frame captioned as TDL's own office, address or staff.
 
-## Stock photographs (`stock` in `src/content/placeholders.ts`)
+## Stock photographs (`stock` in `src/content/placeholders.ts`): retired from the page 2026-10-24, records kept
 
 Pexels or Unsplash licence (free to use, attribution not required; recorded here anyway). Criteria, carried over from v1:
 - A Nigerian workplace, with the location stated on the source page.
@@ -46,7 +46,27 @@ Both were checked at full size: no logo on any device, screens unreadable, no do
 
 The home page showed ten identical navy panels in demo builds, and TDL chose the WordPress site partly because it is photo-led. TDL had asked for generated images for the demo, so the owner extended the slider exception on 2026-10-24. Generated images are now allowed in every demo frame that names no person and claims no TDL premises: **About, the seven service rows and Why TDL**, in presentation builds only, with no caption.
 
-Generation: `scripts/generate-demo-images.mjs` (v1's script, ported), `gpt-image-2`, quality `medium`, 1536×1024. Capped at 9 images and $0.60, with the same base prompt and the same framing and equipment lines as v1's re-runs. There is one scene per frame, matched to its content. The images, checks and spend are recorded below once generated. **Not wired in until the owner approves the contact sheet.** The two stock photographs stay only if they still fit next to the generated set.
+Generation: `scripts/generate-demo-images.mjs` (v1's script, ported), `gpt-image-2`, quality `medium`. Capped at 9 images and $0.60 for the first run, with the same base prompt and the same framing and equipment lines as v1's re-runs, and one scene per frame. The base prompt is quoted in the slider section below; each image's exact prompt is in `photo-picks/generated/manifest.json` (gitignored). Committed as WebP, quality 86, in `public/placeholders/generated/frames/`.
+
+| Frame | File | Scene line | Cost | State |
+|---|---|---|---|---|
+| `about` (About TDL) | `generated/frames/gen-about.webp` 1536×1024 | A small team at work around a shared desk in an open office: one person sketching a plan on a notepad while two colleagues lean in to look, laptops open beside them. | $0.0419 | wired |
+| `service:human-resources-outsourcing` (HR outsourcing row) | `generated/frames/gen-service-human-resources-outsourcing.webp` 1536×1024 | An HR team at work: two HR officers at adjacent desks going through employee folders together, one pointing at a page seen at an angle, a colleague on a phone call in the background. | $0.0419 | wired |
+| `service:business-process-outsourcing` (Business process outsourcing row) | `generated/frames/gen-service-business-process-outsourcing.webp` 1536×1024 | Back-office finance work: an accounts team at a row of desks with calculators and box files, monitors turned away from the camera, one person handing a folder to another. | $0.0419 | wired |
+| `service:recruitment-background-check` (Recruitment row) | `generated/frames/gen-service-recruitment-background-check.webp` 1536×1024 | A recruitment panel interview: two interviewers at a table listening and making notes, the candidate opposite in profile mid-answer, a CV lying flat and seen edge-on. | $0.0419 | wired |
+| `service:learning-and-development` (Learning and development row) | `generated/frames/gen-service-learning-and-development.webp` 1536×1024 | A staff training session seen from the back of the room: a facilitator standing beside a blank flip chart addressing eight colleagues seated with notebooks. | $0.0418 | wired |
+| `service:payroll-management` (Payroll management row) | `generated/frames/gen-service-payroll-management.webp` 1536×1024 | A payroll team checking a month-end run: two people at one desk comparing a printed schedule seen edge-on, a calculator between them and a monitor turned away from the camera. | $0.0419 | wired |
+| `service:business-advisory` (Business advisory row) | `generated/frames/gen-service-business-advisory.webp` 1536×1024 | An advisory meeting: a senior consultant and two business owners around a small round table, one owner explaining with her hands, notebooks and coffee cups on the table. | $0.0419 | wired |
+| `service:technology-solutions` (Technology solutions row) | `generated/frames/gen-service-technology-solutions.webp` 1536×1024 | A software team at work: three developers at a long desk, two discussing something on a monitor angled away from the camera, the third typing on a laptop. | $0.0419 | wired |
+| `why` (Why TDL) | `generated/frames/gen-why-portrait.webp` 1024×1536 | A client meeting between two people seated close together at a small table, both inside the centre of the frame, one walking the other through a printed proposal held at an angle. One wears a burgundy top, the other a light green shirt; no navy suits and no black blazers. | $0.0420 | **awaiting the owner's OK** after the frame preview at 1280 / 768 / 390; until then Why TDL shows its brand panel |
+
+**Checked at full size**, as in v1: hands (including gesturing and clasped hands), faces including background people, any text (notepads, schedules and proposals read as marks; the flip chart is blank), logos (none on monitor backs, laptop lids, watches or calculators), and painted bars (none). All passed.
+
+**Rejected:** round 1 `why` (v2-r1-why-medium.png, 1536×1024, $0.0418). The Why TDL frame is portrait (5:7 at `lg`, 4:5 on phones), so a wide shot cropped to one person. Its man in a navy suit also looked like the one in the HR row. It was re-run at 1024×1536 with v1's landscape framing line swapped for a portrait one. The base prompt stayed word for word (owner's instruction), including its closing "landscape."; the canvas sets the shape. The scene asked for two people central, burgundy and light-green clothing, and no navy suit or black blazer.
+
+**Spend:** 10 images, **$0.4187** in total ($0.3349 for the eight wired, $0.0420 for the portrait re-run, $0.0418 for the rejected wide `why`). Two earlier attempts stopped on HTTP 401 (an expired key, then an invalidated one) before any image was made, at $0.
+
+**Stock dropped from the page (2026-10-24, owner).** The two stock photographs below (About: Unsplash kwzWjTnDPLk; Why TDL: Pexels 30688591) stopped rendering when the generated set arrived. Beside it they were cooler and higher-contrast; they duplicated the technology and recruitment scenes; and the Pexels subject looks at the camera. Their files were removed; their records stay below.
 
 ## AI-generated images for the home hero slider (`sliderImages`)
 

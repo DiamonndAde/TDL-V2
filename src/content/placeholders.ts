@@ -24,37 +24,13 @@ export interface StockImage {
 }
 
 /**
- * Keyed by frame; a frame with no entry shows its brand panel. Sourced 2026-10-24 (PLACEHOLDERS.md has the
- * candidates rejected and why). Only two passed every criterion, so they go to the two single-photo frames on the
- * home page and the seven service rows keep their brand panels in every build, which reads as designed rather than
- * as two photographs among five gaps.
+ * Stock demo photographs, keyed by frame. Empty since 2026-10-24: the two that passed every criterion (Unsplash
+ * kwzWjTnDPLk, Pexels 30688591) were dropped from the page when the generated set arrived (owner's decision; cooler,
+ * higher-contrast, and duplicating the technology and recruitment scenes). Their records stay in PLACEHOLDERS.md.
  */
-export const stock: Partial<Record<StockFrame, StockImage>> = {
-  about: {
-    file: "/placeholders/stock/unsplash-kwzWjTnDPLk.jpg",
-    width: 1800,
-    height: 1200,
-    scene: "Two colleagues working through code together at a laptop, more desks behind, Lagos (NESA by Makers)",
-    position: "62% 40%",
-    photographer: "X (@disruptxn)",
-    photographerUrl: "https://unsplash.com/@disruptxn",
-    sourceUrl: "https://unsplash.com/photos/man-using-black-laptop-computer-kwzWjTnDPLk",
-    licence: "Unsplash",
-  },
-  why: {
-    file: "/placeholders/stock/pexels-30688591.jpg",
-    width: 1800,
-    height: 1200,
-    scene: "An interview across a desk in a modern Lagos office, the interviewer in the foreground",
-    position: "48% 40%",
-    photographer: "Ninthgrid",
-    photographerUrl: "https://www.pexels.com/@ninthgrid-2149521550/",
-    sourceUrl: "https://www.pexels.com/photo/professional-interview-in-modern-lagos-office-30688591/",
-    licence: "Pexels",
-  },
-};
+export const stock: Partial<Record<DemoFrame, StockImage>> = {};
 
-export type StockFrame =
+export type DemoFrame =
   | "about"
   | "why"
   | "service:human-resources-outsourcing"
@@ -64,6 +40,32 @@ export type StockFrame =
   | "service:payroll-management"
   | "service:business-advisory"
   | "service:technology-solutions";
+
+const FRAMES = "/placeholders/generated/frames";
+/**
+ * Generated demo images for the home frames (owner's extension of TDL's request, 2026-10-24): presentation builds
+ * only, frames that name no person and claim no TDL premises, no caption. Made by scripts/generate-demo-images.mjs
+ * (gpt-image-2, medium); prompt, checks and cost of each are in PLACEHOLDERS.md. Committed as WebP (quality 86).
+ * A frame with a TDL photograph (photographs.ts) never shows one of these.
+ */
+export const frameImages: Partial<Record<DemoFrame, GeneratedImage>> = {
+  about: { file: `${FRAMES}/gen-about.webp`, width: 1536, height: 1024, position: "50% 45%",
+    scene: "a small team around a shared desk, one sketching a plan on a notepad" },
+  "service:human-resources-outsourcing": { file: `${FRAMES}/gen-service-human-resources-outsourcing.webp`, width: 1536, height: 1024, position: "55% 50%",
+    scene: "two HR officers going through employee folders, a colleague on the phone behind" },
+  "service:business-process-outsourcing": { file: `${FRAMES}/gen-service-business-process-outsourcing.webp`, width: 1536, height: 1024, position: "55% 45%",
+    scene: "back-office finance desks, a folder handed across a partition" },
+  "service:recruitment-background-check": { file: `${FRAMES}/gen-service-recruitment-background-check.webp`, width: 1536, height: 1024, position: "50% 40%",
+    scene: "a panel interview, two interviewers taking notes, the candidate in profile" },
+  "service:learning-and-development": { file: `${FRAMES}/gen-service-learning-and-development.webp`, width: 1536, height: 1024, position: "50% 40%",
+    scene: "a training session seen from the back of the room, a blank flip chart" },
+  "service:payroll-management": { file: `${FRAMES}/gen-service-payroll-management.webp`, width: 1536, height: 1024, position: "50% 45%",
+    scene: "two people checking a printed schedule beside a calculator" },
+  "service:business-advisory": { file: `${FRAMES}/gen-service-business-advisory.webp`, width: 1536, height: 1024, position: "50% 40%",
+    scene: "a consultant and two business owners at a round table" },
+  "service:technology-solutions": { file: `${FRAMES}/gen-service-technology-solutions.webp`, width: 1536, height: 1024, position: "55% 45%",
+    scene: "a software team at a monitor and a laptop" },
+};
 
 /**
  * AI-generated images for the home hero slider: the one client-approved exception to "never generated imagery"
