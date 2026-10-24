@@ -44,7 +44,7 @@ Both were checked at full size: no logo on any device, screens unreadable, no do
 
 ## AI-generated images for the frames (exception extended 2026-10-24)
 
-The six-page home showed ten identical navy panels in demo builds, and TDL chose the WordPress site partly because it is photo-led. TDL had asked for generated images for the demo, so the owner extended the slider exception on 2026-10-24. Generated images are now allowed in every demo frame that names no person and claims no TDL premises: **About, the seven service rows and Why TDL**, in presentation builds only, with no caption.
+The home page showed ten identical navy panels in demo builds, and TDL chose the WordPress site partly because it is photo-led. TDL had asked for generated images for the demo, so the owner extended the slider exception on 2026-10-24. Generated images are now allowed in every demo frame that names no person and claims no TDL premises: **About, the seven service rows and Why TDL**, in presentation builds only, with no caption.
 
 Generation: `scripts/generate-demo-images.mjs` (v1's script, ported), `gpt-image-2`, quality `medium`, 1536×1024. Capped at 9 images and $0.60, with the same base prompt and the same framing and equipment lines as v1's re-runs. There is one scene per frame, matched to its content. The images, checks and spend are recorded below once generated. **Not wired in until the owner approves the contact sheet.** The two stock photographs stay only if they still fit next to the generated set.
 
