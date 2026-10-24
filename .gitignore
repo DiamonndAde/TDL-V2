@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generation output (originals and manifest); only optimised picks are committed, under public/placeholders/
+/photo-picks/

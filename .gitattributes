@@ -1,0 +1,5 @@
+# Shell and Python scripts must keep LF endings: core.autocrlf=true would give them CRLF on a Windows checkout,
+# and bash rejects a CRLF script.
+*.sh text eol=lf
+*.py text eol=lf
+*.mjs text eol=lf

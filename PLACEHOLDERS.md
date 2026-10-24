@@ -42,6 +42,12 @@ Both were checked at full size: no logo on any device, screens unreadable, no do
 - **No location stated on the source page:** Oladipupo Ajisegiri 1405769 and Oluwapamilerinayo Ajala 30970394, both used in v1; their pages no longer state one.
 - **Paid licence:** Ben Iwara's Lagos series on Unsplash (XRe8KaTs6YU, MBf1ehMmV3A, rQbchGgEw9E, I5Ozz_OuJXA and the silhouette set) is Unsplash+, not free.
 
+## AI-generated images for the frames (exception extended 2026-10-24)
+
+The six-page home showed ten identical navy panels in demo builds, and TDL chose the WordPress site partly because it is photo-led. TDL had asked for generated images for the demo, so the owner extended the slider exception on 2026-10-24. Generated images are now allowed in every demo frame that names no person and claims no TDL premises: **About, the seven service rows and Why TDL**, in presentation builds only, with no caption.
+
+Generation: `scripts/generate-demo-images.mjs` (v1's script, ported), `gpt-image-2`, quality `medium`, 1536×1024. Capped at 9 images and $0.60, with the same base prompt and the same framing and equipment lines as v1's re-runs. There is one scene per frame, matched to its content. The images, checks and spend are recorded below once generated. **Not wired in until the owner approves the contact sheet.** The two stock photographs stay only if they still fit next to the generated set.
+
 ## AI-generated images for the home hero slider (`sliderImages`)
 
 **AI-generated with OpenAI `gpt-image-2`** (Images API, 1536×1024, quality `medium`) by v1's `scripts/generate-slider-images.mjs` (in `../tdl-website`; not ported). **Client-approved exception**: TDL asked on 2026-10-17 for generated images in the slider until their own photographs arrive (Q27); the owner approved the six below on 2026-10-22. They appear **only in presentation builds** (`PLACEHOLDER_IMAGES`, behind the build guard), **only in the home slider** (in v2, the hero background), and **since 2026-10-24 with no caption** (owner's instruction: no visible labels, credits or captions on demo imagery). They never sit in a frame that names a person or claims TDL's premises (AGENTS.md, Placeholders rules 1–3). Committed as WebP (quality 86); the PNG originals and the generation manifest stay in the gitignored `photo-picks/generated/`.
