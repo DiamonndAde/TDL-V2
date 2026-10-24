@@ -88,7 +88,7 @@ Buttons follow the WordPress pattern: a pill label with a separate round arrow (
 **Performance** (the audience is on mobile, often on metered data; these are requirements):
 - LCP < 2.5 s on simulated 4G, CLS < 0.1, INP < 200 ms.
 - First-load JS per route: the framework floor plus **60 KB gzipped** of our own code. Re-measure the floor on this Next/React version with an empty page before the first feature lands, and record it in `scripts/first-load.mjs`. Report per-route numbers at the end of each feature.
-- Images through `next/image` with explicit sizes. Only the first hero image is `priority`. Client logos are local, never hot-linked. No preloader. The PostHog SDK is never downloaded without a key and consent.
+- Images through `next/image` with explicit sizes. Only the first hero image is preloaded (`preload` or `fetchPriority="high"`; `priority` is deprecated in Next 16). Client logos are local, never hot-linked. No preloader. The PostHog SDK is never downloaded without a key and consent.
 
 **Accessibility:** WCAG 2.2 AA.
 - No serious or critical axe violations at 1280 and 390.
