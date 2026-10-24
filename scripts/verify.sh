@@ -31,7 +31,7 @@ export PLACEHOLDER_PRESENTATION_BUILD= NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POST
 WORK="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/tdl-verify-$$")"
 mkdir -p "$WORK"
 # Routes that exist so far; grows with docs/PLAN.md §8.
-ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions"
+ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /privacy-policy /cookies-policy /insights"
 RESULTS=()
 FAILED=0
 

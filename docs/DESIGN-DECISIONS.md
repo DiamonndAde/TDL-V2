@@ -111,3 +111,15 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
   - Sub-services are cards, the close is scoped (the WhatsApp message and `/become-a-client?service=` carry the service), and the other six are linked cards.
   - Unknown slugs 404 through `notFound()`. `dynamicParams = false` is not available under Cache Components (bundled docs), so the build lists a `◐` shell for `/services/[slug]`.
 - `verify.sh` runs `next typegen` before `tsc`: route types (`PageProps<'/services/[slug]'>`) are generated, and a new route fails typecheck until they are.
+
+## 2026-10-24 — About, Work, Certifications, legal, Insights (step 8)
+
+- **About:**
+  - Page header with the About frame (generated team image in demo builds, panel otherwise; no caption claims TDL).
+  - Story, then vision and mission as cards, and SPICE as five letter cards.
+  - Management and board with their verbatim bios ("TOluwalase", Q5), then the MD quote panel.
+  - "Where to find us" is an address card, not a photo frame: a frame captioned with TDL's address may only ever hold TDL's own photograph (Q18).
+- **Named people get initials monograms in every build** (navy, lime Space Grotesk), the designed fallback, as the brand panels are for photographs. v1 showed monograms only in demo builds and "Portrait to come" boxes otherwise; an empty box reads as broken, and initials claim no likeness.
+- **Work:** the three accounts as situation / ran / said cards plus the full quote. Each section is anchored (`#carlcare`, `#chi`, `#transsnet`) for the home testimonial links. Names are gated on Q21; typos are kept (Q22).
+- **Certifications:** the ISO badge, the two PDFs as cards, and two dashed "To come" rows (Q19).
+- **Privacy and cookies:** verbatim (Q25), with no motion. **Insights:** a stub, noindex, not in the nav or sitemap.
