@@ -9,7 +9,7 @@
  * <link rel="modulepreload"> that points at /_next/static, downloads each once, and reports raw + gzip totals.
  * Lazy chunks loaded later by dynamic import are excluded by construction â€” they are not first-load.
  */
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { gzipSync } from "node:zlib";
 import { createServer } from "node:net";
 
@@ -41,6 +41,16 @@ await new Promise((res, rej) => {
   });
   server.stderr.on("data", (d) => process.stderr.write(d));
 });
+
+/**
+ * On Windows `server.kill()` ends only the shell that `shell: true` started and orphans `next start`, which then
+ * keeps .next open across later builds (found 2026-10-24: four orphans, and a build that kept serving stale CSS).
+ * Kill the whole tree instead.
+ */
+function stopServer() {
+  if (process.platform === "win32") spawnSync("taskkill", ["/pid", String(server.pid), "/T", "/F"], { stdio: "ignore" });
+  else server.kill();
+}
 
 const base = `http://localhost:${port}`;
 const cache = new Map();
@@ -84,5 +94,5 @@ ${route}  -  ${urls.size} scripts, ${(raw / 1024).toFixed(1)} KB raw, ${kb.toFix
 }
 console.log(`
 Budget: floor ${FLOOR_KB} KB + ${OWN_BUDGET_KB} KB own code = ${BUDGET_KB.toFixed(1)} KB gzip. Worst route: ${worst.toFixed(1)} KB.`);
-server.kill();
+stopServer();
 process.exit(worst > BUDGET_KB ? 1 : 0);

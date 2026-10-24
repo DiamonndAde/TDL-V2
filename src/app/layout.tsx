@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lato, Space_Grotesk } from "next/font/google";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
 import { JsonLd } from "@/components/seo/json-ld";
 import { company } from "@/content/facts";
 import "./globals.css";
@@ -45,7 +47,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // data-accent picks the accent palette in globals.css: "green" (approved) or "olive".
     <html lang="en-NG" data-accent="green" className={`${lato.variable} ${spaceGrotesk.variable}`}>
       <body>
+        <a
+          href="#main"
+          className="sr-only z-[60] rounded-md bg-navy px-4 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
         {children}
+        <SiteFooter />
         <JsonLd />
       </body>
     </html>

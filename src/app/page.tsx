@@ -1,3 +1,4 @@
 export default function Home() {
-  return <main id="main" />;
+  // The home sections land in docs/PLAN.md steps 4–6.
+  return <main id="main" className="min-h-[60vh]" />;
 }

@@ -13,9 +13,11 @@
     "verify:full": "bash scripts/verify.sh 3",
     "first-load": "cross-env MSYS_NO_PATHCONV=1 node scripts/first-load.mjs",
     "check:adapter": "node scripts/check-adapter.mjs",
-    "test:guard": "bash scripts/placeholder-guard-proof.sh"
+    "test:guard": "bash scripts/placeholder-guard-proof.sh",
+    "test:scroll": "bash scripts/serve-and-run.sh python scripts/scroll-proof.py"
   },
   "dependencies": {
+    "@oddbird/popover-polyfill": "0.7.3",
     "lucide-react": "1.54.0",
     "motion": "13.5.1",
     "next": "16.4.2",

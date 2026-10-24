@@ -93,6 +93,44 @@
   }
 }
 
+/* Header hairline: fades in over the first 80 px of scroll. Decorative, so progressive enhancement with no JS
+   fallback; the full @supports test filters out partial implementations. */
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: rgb(15 23 42 / 0.1);
+  box-shadow: 0 6px 18px rgb(15 23 42 / 0.06);
+}
+@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+  .site-header::after {
+    opacity: 0;
+    animation: header-hairline linear both;
+    animation-timeline: scroll(block root);
+    animation-range: 0 80px;
+  }
+}
+@keyframes header-hairline {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile menu icon swap while the popover is open. */
+.menu-toggle .menu-icon-close {
+  display: none;
+}
+:root:has(#site-menu:popover-open) .menu-toggle .menu-icon-open {
+  display: none;
+}
+:root:has(#site-menu:popover-open) .menu-toggle .menu-icon-close {
+  display: block;
+}
+.site-menu::backdrop {
+  background: transparent;
+}
+
 @layer utilities {
   .container-site {
     width: 100%;

@@ -48,7 +48,7 @@ step() {
   if "$@" >"$log" 2>&1; then
     local secs=$((SECONDS - start))
     RESULTS+=("ok    $(printf '%4ss' "$secs")  $label")
-    grep -E "FAILURES:|Budget:|Boundaries ok|SKIPPED|ok  .*worst|gzip = floor|perf .*a11y" "$log" | tail -20 | sed 's/^/   /'
+    grep -E "FAILURES:|NOT YET|Budget:|Boundaries ok|SKIPPED|ok  .*worst|gzip = floor|perf .*a11y" "$log" | tail -20 | sed 's/^/   /'
     return 0
   else
     local secs=$((SECONDS - start))
@@ -59,7 +59,13 @@ step() {
   fi
 }
 
-build() { kill_port 3131; npx next build; }
+# Any `next start` left running keeps .next open on Windows, and a build over it can leave stale output
+# (2026-10-24: stale CSS). Stop every one before building.
+kill_next_servers() {
+  powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { \$_.CommandLine -match 'next[^ ]* start' } | ForEach-Object { Stop-Process -Id \$_.ProcessId -Force -ErrorAction SilentlyContinue }" >/dev/null 2>&1 || true
+}
+
+build() { kill_port 3131; kill_next_servers; npx next build; }
 
 summary() {
   printf '\n════════ Tier %s summary ════════\n' "$TIER"
@@ -77,6 +83,7 @@ if [ "$TIER" -lt 2 ]; then summary; exit $FAILED; fi
 
 # ── Tier 2 ─────────────────────────────────────────────────────────────────────────────────────────────────
 if ! step "production build (shipping config)" build; then summary; exit 1; fi
+step "scroll regression (+ header stays on screen)"       env SCROLL_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
 kill_port 3131
 # shellcheck disable=SC2086
 step "first-load JS, every route" node scripts/first-load.mjs $ROUTES
