@@ -1,4 +1,11 @@
+import { Hero } from "@/components/home/hero";
+
 export default function Home() {
-  // The home sections land in docs/PLAN.md steps 4–6.
-  return <main id="main" className="min-h-[60vh]" />;
+  return (
+    <main id="main">
+      <Hero />
+      {/* The remaining home sections land in docs/PLAN.md steps 5–6. */}
+      <div className="min-h-[40vh]" />
+    </main>
+  );
 }

@@ -117,6 +117,77 @@
   }
 }
 
+/*
+ * Hero motion: pure CSS from first paint, so nothing waits for hydration and nothing stays hidden without
+ * JavaScript. Opted into under no-preference only, so reduced motion shows everything at once (AGENTS.md, Motion).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Typed second sentence of the H1: ~45 ms a character after a short beat, a caret on the newest character.
+     The END state is the base style (visible, no caret): the hide holds only during the delay (backwards fill) and
+     the caret only while its animation is active (no fill). A `forwards` fill can land on the start keyframe at the
+     exact end through float rounding (2026-10-24: carets stuck on six characters), and here that would have meant
+     invisible letters. Anything that goes wrong now leaves the text readable. */
+  .typed-headline {
+    --start: 350ms;
+    --step: 45ms;
+  }
+  .typed-headline .tc {
+    animation:
+      tc-hide 1ms backwards,
+      tc-caret var(--step) step-end;
+    animation-delay: calc(var(--start) + var(--i) * var(--step));
+  }
+  .typed-headline .tc-last {
+    animation:
+      tc-hide 1ms backwards,
+      tc-blink 1s step-end 3;
+    animation-delay: calc(var(--start) + var(--i) * var(--step));
+  }
+  /* Sub-line and button: a 12 px rise, 0.5 s, staggered by --d. Backwards fill only: the end state is the base. */
+  .hero-rise {
+    animation: hero-rise 0.5s ease-out backwards;
+    animation-delay: var(--d, 0ms);
+  }
+  /* The slider's clock: the current indicator fills over 6 s, then the slider advances (hero-slider.tsx). */
+  .hero-progress {
+    animation: hero-progress 6s linear both;
+  }
+}
+@keyframes tc-hide {
+  from,
+  to {
+    opacity: 0;
+  }
+}
+@keyframes tc-caret {
+  from,
+  to {
+    box-shadow: 0.07em 0 0 0 currentColor;
+  }
+}
+@keyframes tc-blink {
+  0% {
+    box-shadow: 0.07em 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow: none;
+  }
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+@keyframes hero-progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
 /* Mobile menu icon swap while the popover is open. */
 .menu-toggle .menu-icon-close {
   display: none;

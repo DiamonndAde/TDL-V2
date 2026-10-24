@@ -14,7 +14,8 @@
     "first-load": "cross-env MSYS_NO_PATHCONV=1 node scripts/first-load.mjs",
     "check:adapter": "node scripts/check-adapter.mjs",
     "test:guard": "bash scripts/placeholder-guard-proof.sh",
-    "test:scroll": "bash scripts/serve-and-run.sh python scripts/scroll-proof.py"
+    "test:scroll": "bash scripts/serve-and-run.sh python scripts/scroll-proof.py",
+    "test:slider": "bash scripts/slider-proof.sh"
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "0.7.3",

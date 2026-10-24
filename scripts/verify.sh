@@ -93,6 +93,8 @@ if [ "$TIER" -lt 3 ]; then summary; exit $FAILED; fi
 # ── Tier 3 ─────────────────────────────────────────────────────────────────────────────────────────────────
 step "placeholder guard: refuses production, allows presentation and preview, no demo imagery in the shipping output" \
       bash scripts/placeholder-guard-proof.sh
+# Builds a presentation build of its own (the slider has nothing to show otherwise) and restores the shipping one.
+step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure"       bash scripts/slider-proof.sh
 
 summary
 exit $FAILED

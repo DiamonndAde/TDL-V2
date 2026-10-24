@@ -71,7 +71,7 @@ Inner pages share a **page header band** (mist ground, H1 in navy with an accent
 | Where | WordPress | v2 |
 |---|---|---|
 | Hero headline | Typed "Scale Your" at load | Second sentence typed per character in CSS from first paint (~30 ms/char), with a caret that blinks and then stops. The full text is server-rendered |
-| Hero sub and button | fadeIn, 0.7 s delay | Fade + 12 px up, 0.5 s, delay 0.15 s / 0.25 s. Never hidden without JS |
+| Hero sub and button | fadeIn, 0.7 s delay | Sub-line paints with the HTML (it is the LCP element without photographs); the button rises 12 px, 0.5 s, 0.15 s delay, CSS only |
 | Hero slider | — (static image) | 0.8 s crossfade, 6 s per image, only after first paint and while on screen |
 | Figures | Slide in from the sides (tablet only) | Fade + 16 px up, stagger 0.08 s, all widths. **Counters**: 5,000+ and 100+ count up once in view, 0.9 s. The final value is in the HTML |
 | About | Section fadeIn | Text fades up 16 px; photo fades, 0.5 s |

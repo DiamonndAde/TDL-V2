@@ -64,7 +64,8 @@ Buttons follow the WordPress pattern: a pill label with a separate round arrow (
 ## Motion (recreating WordPress's motion, quicker and safer)
 
 - Section entrances use `whileInView` with `viewport={{ once: true }}`: opacity plus a 12–24 px offset, 0.4–0.6 s, ease-out, stagger ≤ 0.08 s. The table of which sections animate and how is in `docs/PLAN.md` §4. No attention-seekers (no `tada`, no `zoomInDown`, no hover "hang") and no 100%-height translates.
-- **Content is never hidden without JavaScript.** The hidden starting state applies only once JS is running and motion is allowed. Above-the-fold content is never hidden. The reveal test enforces this.
+- **Content is never hidden without JavaScript.** The hidden starting state applies only once JS is running and motion is allowed. Above-the-fold entrances are pure CSS from first paint, never wait for JS, and **never touch the LCP element** (a fade from opacity 0 delays LCP by its full duration). The reveal test enforces this.
+- **A CSS entrance ends on the base style.** Hide during the delay with a `backwards` fill and let the animation end on the element's own style; never rely on a `forwards` fill for the visible state (float rounding at the end can land on the start keyframe).
 - **The headline paints with the HTML.** The typed part is server-rendered, CSS-animated per character from first paint, with no hydration wait. The full sentence is in the DOM for crawlers and screen readers, and the animated copy is `aria-hidden`.
 - Typed accent words in section headings type once, when in view. Never at page load off-screen.
 - Anything that moves on its own (hero slider, testimonial carousel below `lg`, logo marquee) has a visible pause control. It also pauses on hover and while focus is inside, and does not run at all under `prefers-reduced-motion`.
