@@ -56,3 +56,12 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
 - **Holds:** a mouse over the hero or focus inside it holds the slider. Touch doesn't hold, because a tap leaves `:hover` stuck on. Pressing Play overrides the hold, since the pointer and focus are on the Play button at that moment; Pause or manual navigation ends the override.
 - **Images:** the first is eager with `fetchpriority="high"` (`priority` is deprecated in Next 16) and is the LCP element in demo builds. Each later image loads when the one before it shows. The phone crop is served through `<picture>` with `getImageProps`, and its focal point comes from a media-query CSS variable, because `object-position` can't vary per `<source>`.
 - **Production hero is plain navy** (D4) until TDL's photographs arrive (Q27).
+
+## 2026-10-24 — Figures, About, quote, services (step 5)
+
+- **Figures strip:** the WordPress four-up with corrected facts (ISO 9001:2015 · since 2000 · 100+ clients · 5,000+ managed staff), Lucide icons in `accent-strong`, and figures in Space Grotesk. Count-up comes in step 6.
+- **About:** WordPress's copy (Q33). The photograph runs to the viewport edge as on WordPress, with "Learn more" over its corner, now pointing at `/about-us`.
+- **Quote:** the "//" mark sits above the indented quote; the first layout overlapped the first word. "TOluwalase" is kept (Q5).
+- **Service rows:** all seven lines, alternating, with a coal card overlapping the frame and the white rule protruding past the card's outer edge, as on WordPress. Card copy is v1's `lead` (Q23); each card links to its service page with an `inSentence()` label.
+- **Brand panel** for frames without a photograph: navy, the logo's lime arc at 25%, and the frame's Lucide icon in lime. In service rows the icon centres in the part of the frame the card leaves visible. The frame reserves its aspect ratio whether it shows a photograph or a panel, so nothing shifts when photographs arrive.
+- **Demo stock: two photographs, not nine.** Only Unsplash kwzWjTnDPLk (About) and Pexels 30688591 (Why TDL) passed every criterion; PLACEHOLDERS.md lists each rejection and why. The service rows keep their panels in every build rather than mixing two photographs with five panels. **Owner's decision pending:** relax the "location stated" criterion to fill them, or wait for TDL's photographs.

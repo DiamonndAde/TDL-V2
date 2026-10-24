@@ -23,8 +23,36 @@ export interface StockImage {
   licence: "Pexels" | "Unsplash";
 }
 
-/** Keyed by frame. Filled as frames are built (step 5); a frame with no entry shows its brand panel. */
-export const stock: Partial<Record<StockFrame, StockImage>> = {};
+/**
+ * Keyed by frame; a frame with no entry shows its brand panel. Sourced 2026-10-24 (PLACEHOLDERS.md has the
+ * candidates rejected and why). Only two passed every criterion, so they go to the two single-photo frames on the
+ * home page and the seven service rows keep their brand panels in every build, which reads as designed rather than
+ * as two photographs among five gaps.
+ */
+export const stock: Partial<Record<StockFrame, StockImage>> = {
+  about: {
+    file: "/placeholders/stock/unsplash-kwzWjTnDPLk.jpg",
+    width: 1800,
+    height: 1200,
+    scene: "Two colleagues working through code together at a laptop, more desks behind, Lagos (NESA by Makers)",
+    position: "62% 40%",
+    photographer: "X (@disruptxn)",
+    photographerUrl: "https://unsplash.com/@disruptxn",
+    sourceUrl: "https://unsplash.com/photos/man-using-black-laptop-computer-kwzWjTnDPLk",
+    licence: "Unsplash",
+  },
+  why: {
+    file: "/placeholders/stock/pexels-30688591.jpg",
+    width: 1800,
+    height: 1200,
+    scene: "An interview across a desk in a modern Lagos office, the interviewer in the foreground",
+    position: "48% 40%",
+    photographer: "Ninthgrid",
+    photographerUrl: "https://www.pexels.com/@ninthgrid-2149521550/",
+    sourceUrl: "https://www.pexels.com/photo/professional-interview-in-modern-lagos-office-30688591/",
+    licence: "Pexels",
+  },
+};
 
 export type StockFrame =
   | "about"

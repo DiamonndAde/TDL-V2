@@ -25,7 +25,22 @@ Pexels or Unsplash licence (free to use, attribution not required; recorded here
 
 | Frame | File | Scene | Photographer | Source | Licence |
 |---|---|---|---|---|---|
-| (sourced in docs/PLAN.md step 5) | | | | | |
+| `about` (home, About TDL) | `stock/unsplash-kwzWjTnDPLk.jpg` 1800×1200 | Two colleagues working through code at a laptop, more desks behind; "Coding together @ NESA by Makers", Lagos, Nigeria | [X (@disruptxn)](https://unsplash.com/@disruptxn) | [unsplash.com/photos/kwzWjTnDPLk](https://unsplash.com/photos/man-using-black-laptop-computer-kwzWjTnDPLk) | Unsplash License (free; checked 2026-10-24, not Unsplash+) |
+| `why` (home, Why TDL) | `stock/pexels-30688591.jpg` 1800×1200 | An interview across a desk in a modern office, the interviewer in the foreground; Lagos, Lagos, Nigeria | [Ninthgrid](https://www.pexels.com/@ninthgrid-2149521550/) | [pexels.com/photo/30688591](https://www.pexels.com/photo/professional-interview-in-modern-lagos-office-30688591/) | Pexels licence (free) |
+
+Both were checked at full size: no logo on any device, screens unreadable, no document legible.
+
+**The seven service rows have no demo photograph, in any build.** Only two candidates passed every criterion. Rather than show two photographs among five brand panels, which reads as gaps, all seven rows show their brand panel (navy, the logo's lime arc, the service's icon) until TDL's photographs arrive. Relaxing a criterion (for example, accepting African office photographs without a stated Nigerian location) would fill them; that is the owner's call.
+
+### Sourced and rejected (2026-10-24)
+
+- **Device logos** (Apple on laptop lids, unless a crop removes them): Ninthgrid 30677592, 30678213, 30678875, 30688588, 30688597, 30690398; a Dell logo on 34690055. Plus every v1 rejection for the same reason (v1's list below).
+- **Signage** ("Café One", "GREAT COFFEE"): Ninthgrid 30677596, 30677598, 30689323, 30690400, 30690405.
+- **Posed, not at work:** 30688595 and 30688914 (group and fist bump); Taiye Salawu 34690054–34690063 (portrait series).
+- **Branded clothing:** 33176041 (team T-shirts with a logo).
+- **Legible screen and brand:** Taiye Salawu 36482981 (v1's `desk-work`). At full size the laptop shows a readable slide ("MARKET INSIGHT · Health & Beauty Day") and a "MacBook Pro" wordmark. v1 judged it at thumbnail size.
+- **No location stated on the source page:** Oladipupo Ajisegiri 1405769 and Oluwapamilerinayo Ajala 30970394, both used in v1; their pages no longer state one.
+- **Paid licence:** Ben Iwara's Lagos series on Unsplash (XRe8KaTs6YU, MBf1ehMmV3A, rQbchGgEw9E, I5Ozz_OuJXA and the silhouette set) is Unsplash+, not free.
 
 ## AI-generated images for the home hero slider (`sliderImages`)
 
