@@ -19,7 +19,8 @@
     "test:reveal": "bash scripts/serve-and-run.sh python scripts/reveal-proof.py",
     "test:overflow": "bash scripts/serve-and-run.sh python scripts/overflow-proof.py",
     "test:form": "bash scripts/form-proof.sh",
-    "test:links": "bash scripts/serve-and-run.sh python scripts/link-proof.py"
+    "test:links": "bash scripts/serve-and-run.sh python scripts/link-proof.py",
+    "test:provider": "node --experimental-strip-types --no-warnings scripts/provider-proof.mjs"
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "0.7.3",

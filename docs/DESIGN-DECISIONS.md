@@ -142,3 +142,12 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
   - `PENDING_ROUTES` in `verify.sh` names planned routes (now only `/careers`); links to them report NOT YET, visibly, until the route lands.
 
   First run: 17 pages, 46 distinct internal links. Without the pending list it failed on `/careers` (linked from 16 pages), the real 404 still live.
+
+## 2026-10-24 — Careers (step 10)
+
+- **One careers page** (change 4); `/career`, `/job-openings` and `/jobs` redirect here. Order as TDL asked: open roles first, a link to TDL's ATS board that opens in a new tab (Q14, from the adapter so the page names no provider, Q29); then the talent-pool form; then diversity and perks, verbatim. The header frame reuses the recruitment row's image.
+- **Recruitment adapter** ported unchanged (`types`, `index`, `zoho`, `webhook`, `none`, `board`). The boundary check's recruitment section now runs: it was seen to fail on a direct Zoho import in the careers page (two failures: the import and the provider's export). Its closing line now names only the sections that ran.
+- `FailureReason` moved to `src/lib/form-result.ts`, shared by both actions.
+- **Provider proof** (`npm run test:provider`, Tier 3) passes every branch against a local stub.
+- **Link check strict:** `PENDING_ROUTES` is empty, and every link on every page must resolve.
+- **Form routes are the heaviest:** `/become-a-client` and `/careers` carry 47.1 and 48.6 KB of our own JS (budget 60). That is a shared 32 KB chunk (react-hook-form and `zod/mini`) plus the forms. Step 11 must keep within it; the PostHog SDK loads lazily after consent and does not count.

@@ -3,8 +3,7 @@
 import { parseEnquiry, type Enquiry } from "@/components/enquiry/schema";
 import { serviceBySlug } from "@/content/services";
 
-/** Why a submission failed. Moves to src/lib/analytics/events.ts with the analytics port (docs/PLAN.md step 11). */
-export type FailureReason = "validation" | "delivery" | "unconfigured" | "network";
+import type { FailureReason } from "@/lib/form-result";
 
 /**
  * `reason` is for the analytics event, `error` for the visitor. They are separate on purpose: the sentence

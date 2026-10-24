@@ -154,5 +154,7 @@ if (failures.length) {
   console.error("Boundary check FAILED:\n" + failures.map((f) => "  " + f).join("\n"));
   process.exit(1);
 }
-console.log("Boundaries ok: no dead or foreign links, every quote excerpt is verbatim" +
-  (skipped.length ? "; recruitment and analytics checks not yet applicable." : ", nothing outside the adapter is wired to a provider, no candidate data is stored, no visitor is identified, analytics masking is in force."));
+const ran = ["no dead or foreign links", "every quote excerpt is verbatim"];
+if (existsSync(join(root, ADAPTER_DIR))) ran.push("nothing outside the adapter is wired to a provider", "no candidate data is stored");
+if (existsSync(join(root, ANALYTICS_DIR))) ran.push("no visitor is identified", "analytics masking is in force");
+console.log(`Boundaries ok: ${ran.join(", ")}.`);

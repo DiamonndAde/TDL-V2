@@ -31,11 +31,11 @@ export PLACEHOLDER_PRESENTATION_BUILD= NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POST
 WORK="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/tdl-verify-$$")"
 mkdir -p "$WORK"
 # Routes that exist so far; grows with docs/PLAN.md §8.
-ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /contact-us /become-a-client /privacy-policy /cookies-policy /insights"
+ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /contact-us /become-a-client /careers /privacy-policy /cookies-policy /insights"
 # The scroll test is the slowest step; one route per template is enough to catch a trap (2026-10-24: 7 min on 11 routes).
 SCROLL_ROUTES="/ /services /services/payroll-management /about-us /work /contact-us /become-a-client /privacy-policy"
 # Planned routes not built yet: the link check reports links to them as NOT YET instead of failing. Empty it as each lands.
-PENDING_ROUTES="/careers"
+PENDING_ROUTES=""
 RESULTS=()
 FAILED=0
 
@@ -108,6 +108,8 @@ step "placeholder guard: refuses production, allows presentation and preview, no
       bash scripts/placeholder-guard-proof.sh
 step "enquiry form: validation, keyboard, delivery to a webhook stand-in, delivery failure, honeypot" \
       bash scripts/form-proof.sh "$WORK"
+step "recruitment adapter: every branch against a stub (no credentials, no network)" \
+      node --experimental-strip-types --no-warnings scripts/provider-proof.mjs
 # Builds a presentation build of its own (the slider has nothing to show otherwise) and restores the shipping one.
 step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure" \
       bash scripts/slider-proof.sh
