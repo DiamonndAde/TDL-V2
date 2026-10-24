@@ -19,6 +19,7 @@ export function PhotoFrame({
   aspect = "aspect-[3/2]",
   sizes,
   focus = "center",
+  imageClassName = "",
   className = "",
   children,
 }: {
@@ -29,6 +30,8 @@ export function PhotoFrame({
   sizes: string;
   /** Where the brand panel's icon sits from lg up: away from a card that overlaps one side of the frame. */
   focus?: "center" | "left" | "right";
+  /** Extra classes for the image, e.g. a per-breakpoint focal point: `sm:max-lg:[object-position:50%_25%]`. */
+  imageClassName?: string;
   className?: string;
   /** Overlaid content, e.g. a badge or a button. */
   children?: React.ReactNode;
@@ -50,8 +53,8 @@ export function PhotoFrame({
           height={photo.height}
           alt={photo.alt}
           sizes={sizes}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: photo.position ?? "50% 50%" }}
+          className={`absolute inset-0 h-full w-full object-cover [object-position:var(--pos)] ${imageClassName}`}
+          style={{ "--pos": photo.position ?? "50% 50%" } as React.CSSProperties}
         />
       ) : (
         <BrandPanel icon={Icon} focus={focus} />

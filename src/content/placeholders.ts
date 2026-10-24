@@ -65,6 +65,9 @@ export const frameImages: Partial<Record<DemoFrame, GeneratedImage>> = {
     scene: "a consultant and two business owners at a round table" },
   "service:technology-solutions": { file: `${FRAMES}/gen-service-technology-solutions.webp`, width: 1536, height: 1024, position: "55% 45%",
     scene: "a software team at a monitor and a laptop" },
+  // Portrait (1024x1536): the frame is 5:7 at lg and 4:5 on phones; a wide shot cropped to one person (round 1, rejected).
+  why: { file: `${FRAMES}/gen-why-portrait.webp`, width: 1024, height: 1536, position: "50% 45%",
+    scene: "two people in a client meeting at a small table, a printed proposal between them" },
 };
 
 /**
