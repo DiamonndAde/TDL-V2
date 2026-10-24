@@ -124,7 +124,7 @@ Run the smallest tier that covers the change, and **say which tier you ran in ev
 | Tier | When | Command | Runs |
 |---|---|---|---|
 | **1** | Every change | `npm run check` | Lint (0 errors), typecheck, boundary check, plus the targeted tests below |
-| **2** | End of a feature, and **before every push** | `npm run verify` | Tier 1 + production build, scroll regression, reveal test (no-JS and reduced motion), overflow with real scrollbars, first-load JS on every route |
+| **2** | End of a feature, and **before every push** | `npm run verify` | Tier 1 + production build, scroll regression, reveal test (no-JS and reduced motion), overflow with real scrollbars, link check (every link 200 or a deliberate redirect), first-load JS on every route |
 | **3** | Before a client demo or launch, or on request | `npm run verify:full` | Everything: axe on every route at 1280 and 390, keyboard, reduced motion, redirects, sitemap, robots, JSON-LD, Lighthouse (one route per template), throttled-mobile probe, enquiry form, consent banner, canary masking, recruitment adapter, placeholder guard, home slider |
 
 | If you touched | Also run in Tier 1 |
@@ -136,6 +136,7 @@ Run the smallest tier that covers the change, and **say which tier you ran in ev
 | The enquiry form | `npm run test:form` |
 | Layout, header, routing, anything that changes page height | `npm run test:scroll` |
 | Anything that changes widths, bleeds or offsets | `npm run test:overflow` |
+| Links, navigation, routes, redirects | `npm run test:links` |
 | Section reveals, typing, counters | `npm run test:reveal` |
 | Copy or styles only | nothing beyond `npm run check` |
 

@@ -31,7 +31,11 @@ export PLACEHOLDER_PRESENTATION_BUILD= NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POST
 WORK="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/tdl-verify-$$")"
 mkdir -p "$WORK"
 # Routes that exist so far; grows with docs/PLAN.md §8.
-ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /privacy-policy /cookies-policy /insights"
+ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /contact-us /become-a-client /privacy-policy /cookies-policy /insights"
+# The scroll test is the slowest step; one route per template is enough to catch a trap (2026-10-24: 7 min on 11 routes).
+SCROLL_ROUTES="/ /services /services/payroll-management /about-us /work /contact-us /become-a-client /privacy-policy"
+# Planned routes not built yet: the link check reports links to them as NOT YET instead of failing. Empty it as each lands.
+PENDING_ROUTES="/careers"
 RESULTS=()
 FAILED=0
 
@@ -48,7 +52,7 @@ step() {
   if "$@" >"$log" 2>&1; then
     local secs=$((SECONDS - start))
     RESULTS+=("ok    $(printf '%4ss' "$secs")  $label")
-    grep -E "FAILURES:|NOT YET|Budget:|Boundaries ok|SKIPPED|ok  .*worst|gzip = floor|perf .*a11y" "$log" | tail -20 | sed 's/^/   /'
+    grep -E "FAILURES:|NOT YET|crawled|Budget:|Boundaries ok|SKIPPED|ok  .*worst|gzip = floor|perf .*a11y" "$log" | tail -20 | sed 's/^/   /'
     return 0
   else
     local secs=$((SECONDS - start))
@@ -85,9 +89,11 @@ if [ "$TIER" -lt 2 ]; then summary; exit $FAILED; fi
 # ── Tier 2 ─────────────────────────────────────────────────────────────────────────────────────────────────
 if ! step "production build (shipping config)" build; then summary; exit 1; fi
 step "scroll regression (+ header stays on screen)" \
-      env SCROLL_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
+      env SCROLL_ROUTES="$SCROLL_ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
 step "reveal test: no JS, reduced motion, motion on (above the fold never hidden, entrances once), marquee, carousel" \
       bash scripts/serve-and-run.sh python scripts/reveal-proof.py
+step "every link on every page returns 200 or a deliberate redirect (anchors included)" \
+      env PENDING_ROUTES="$PENDING_ROUTES" bash scripts/serve-and-run.sh python scripts/link-proof.py
 # Real scrollbars: headless Chromium hides them by default, which hid a 100vw overflow (2026-10-24).
 step "no horizontal overflow with real scrollbars, every route at 390/1280/1920" \
       env OVERFLOW_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/overflow-proof.py
@@ -100,6 +106,8 @@ if [ "$TIER" -lt 3 ]; then summary; exit $FAILED; fi
 # ── Tier 3 ─────────────────────────────────────────────────────────────────────────────────────────────────
 step "placeholder guard: refuses production, allows presentation and preview, no demo imagery in the shipping output" \
       bash scripts/placeholder-guard-proof.sh
+step "enquiry form: validation, keyboard, delivery to a webhook stand-in, delivery failure, honeypot" \
+      bash scripts/form-proof.sh "$WORK"
 # Builds a presentation build of its own (the slider has nothing to show otherwise) and restores the shipping one.
 step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure" \
       bash scripts/slider-proof.sh

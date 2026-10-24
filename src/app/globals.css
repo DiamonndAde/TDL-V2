@@ -250,6 +250,20 @@
   }
 }
 
+/* Enquiry form: the new step slides in from the direction of travel, 200 ms, only after the visitor moves. A
+   from-only keyframe, so the animation ends on the base style. */
+@media (prefers-reduced-motion: no-preference) {
+  .step-panel {
+    animation: step-in 200ms ease-out;
+  }
+}
+@keyframes step-in {
+  from {
+    opacity: 0;
+    translate: calc(var(--step-dir, 1) * 12px) 0;
+  }
+}
+
 /* Printing never inherits a reveal's armed state (an inline style from the motion layer). */
 @media print {
   [data-reveal],

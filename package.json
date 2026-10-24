@@ -17,7 +17,9 @@
     "test:scroll": "bash scripts/serve-and-run.sh python scripts/scroll-proof.py",
     "test:slider": "bash scripts/slider-proof.sh",
     "test:reveal": "bash scripts/serve-and-run.sh python scripts/reveal-proof.py",
-    "test:overflow": "bash scripts/serve-and-run.sh python scripts/overflow-proof.py"
+    "test:overflow": "bash scripts/serve-and-run.sh python scripts/overflow-proof.py",
+    "test:form": "bash scripts/form-proof.sh",
+    "test:links": "bash scripts/serve-and-run.sh python scripts/link-proof.py"
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "0.7.3",

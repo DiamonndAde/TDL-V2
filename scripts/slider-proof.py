@@ -153,6 +153,18 @@ with sync_playwright() as p:
     src = page.evaluate(f"() => document.querySelectorAll('{SLIDES}')[1].querySelector('img')?.currentSrc ?? ''")
     check("phone" in src, f"a slide with its own phone crop serves it on a phone ({src[-60:]})")
     ctx.close()
+
+    # ---- the brochure QR on /contact-us (change 7): present, labelled with its target, marked do-not-print in a demo
+    ctx = b.new_context(viewport={"width": 1280, "height": 900})
+    page = ctx.new_page()
+    page.goto(BASE + "/contact-us", wait_until="networkidle")
+    qr = page.locator("[role=img][aria-label^='QR code for']")
+    label = qr.get_attribute("aria-label") if qr.count() else ""
+    check(qr.count() == 1 and label.endswith("/brochure"), f"QR on /contact-us encodes /brochure ({label})")
+    check(page.get_by_text("Do not print it").count() == 1, "demo build marks the QR do-not-print")
+    check(page.locator("a[href='/brochure']").count() >= 1, "a plain link to /brochure sits beside the code")
+    OUT and page.screenshot(path=f"{OUT}/contact-1280.png", full_page=True)
+    ctx.close()
     b.close()
 
 # /brochure: to the PDF once it is in public/, to /services until then.

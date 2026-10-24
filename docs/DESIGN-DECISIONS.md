@@ -123,3 +123,22 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
 - **Work:** the three accounts as situation / ran / said cards plus the full quote. Each section is anchored (`#carlcare`, `#chi`, `#transsnet`) for the home testimonial links. Names are gated on Q21; typos are kept (Q22).
 - **Certifications:** the ISO badge, the two PDFs as cards, and two dashed "To come" rows (Q19).
 - **Privacy and cookies:** verbatim (Q25), with no motion. **Insights:** a stub, noindex, not in the nav or sitemap.
+
+## 2026-10-24 — Contact and the enquiry form (step 9)
+
+- **Contact:** direct lines first as four cards (phone, WhatsApp, email, the office with a Google Maps link and no embed, so no third-party script runs before consent). Then the brochure QR (change 7, drawn at build time, navy on white, encoding the stable `/brochure`) and the new-client close.
+- **Enquiry form:** v1's three steps, schema, resolver and server action, logic unchanged and restyled. It keeps v1's lessons:
+  - `?service=` is read after mount, not with `useSearchParams`, which kept the form out of the HTML and cost CLS 0.60 in v1.
+  - The honeypot is accepted and delivers nothing.
+  - Failure reasons are an enum, never the error text.
+  - The success screen uses `getValues()` instead of `watch()`: it renders once, and `watch()` defeats React Compiler memoisation (lint warning).
+  - Analytics calls are stripped until step 11.
+- **Form test** (`npm run test:form`, Tier 3) ported unchanged; all 18 checks pass. It was seen to fail when the action sent service slugs instead of names. The slider test now also checks the contact QR (target `/brochure`, demo-marked, plain link beside it).
+- **Scroll test** runs on one route per template (`SCROLL_ROUTES` in `verify.sh`); on all routes it had grown to 7 minutes.
+- **Link check** (`scripts/link-proof.py`, Tier 2; owner's request after every menu link 404ed on the live site):
+  - Crawls every internal page from `/` and requests every link in the header, footer and body without following redirects.
+  - A 200 passes. A 307/308 passes only if it is a deliberate `next.config.ts` redirect whose destination returns 200.
+  - `#fragments` must exist on the destination page. External links must be https, mailto or tel.
+  - `PENDING_ROUTES` in `verify.sh` names planned routes (now only `/careers`); links to them report NOT YET, visibly, until the route lands.
+
+  First run: 17 pages, 46 distinct internal links. Without the pending list it failed on `/careers` (linked from 16 pages), the real 404 still live.
