@@ -81,3 +81,10 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
   - Carousel: advances below `lg`, Pause holds it, one row at `lg`.
 
   Seen to fail with `Reveal` shipping opacity 0 (57 hidden elements without JS) and with typed words that never run. One flaw was fixed while proving it: the on-screen check read each element's own opacity, so a hidden wrapper could pass. It now multiplies through ancestors.
+
+## 2026-10-24 — Horizontal overflow on Windows (owner's review of the deployed site)
+
+- **Cause:** the About photograph bled to the viewport edge with `xl:-mr-[calc((100vw-75rem)/2+2rem)]`. `100vw` includes a classic scrollbar, so on Windows the page was one scrollbar wider than its viewport: scrollWidth 1273 vs clientWidth 1265 at 1280, and 1913 vs 1905 at 1920.
+- **Why every test passed:** headless Chromium launches with `--hide-scrollbars`, so `100vw` equalled the layout width in every test.
+- **Fix:** a `.bleed-grid` utility with named lines (`[full-start] gutter [content-start] half [mid] half [content-end] gutter [full-end]`). The photograph spans `mid / full-end`. Grid tracks resolve against the container's width, which excludes the scrollbar. Measured: the image ends exactly at clientWidth at 1024, 1280 and 1920. `overflow-x: clip` on the section is a safety net; it's clip, not hidden, so there's no scroll container and the sticky header still sticks. A second trap found on the way: `.container-site` (a custom utility) outranked `lg:max-w-none lg:px-0` on the same element, so the grid stayed boxed until it used plain utilities. Both are now AGENTS.md rules. No other `vw` remains outside `sizes`.
+- **Test:** `scripts/overflow-proof.py` (Tier 2) launches Chromium with `ignore_default_args=["--hide-scrollbars"]`. It confirms a classic scrollbar exists (15 px here), then asserts scrollWidth === clientWidth on every route plus the 404 page at 390, 1280 and 1920. It failed first with exactly the reported numbers and named the About wrapper.

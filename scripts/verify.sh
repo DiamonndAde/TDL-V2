@@ -83,8 +83,13 @@ if [ "$TIER" -lt 2 ]; then summary; exit $FAILED; fi
 
 # ── Tier 2 ─────────────────────────────────────────────────────────────────────────────────────────────────
 if ! step "production build (shipping config)" build; then summary; exit 1; fi
-step "scroll regression (+ header stays on screen)"       env SCROLL_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
-step "reveal test: no JS, reduced motion, motion on (above the fold never hidden, entrances once), marquee, carousel"       bash scripts/serve-and-run.sh python scripts/reveal-proof.py
+step "scroll regression (+ header stays on screen)" \
+      env SCROLL_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/scroll-proof.py
+step "reveal test: no JS, reduced motion, motion on (above the fold never hidden, entrances once), marquee, carousel" \
+      bash scripts/serve-and-run.sh python scripts/reveal-proof.py
+# Real scrollbars: headless Chromium hides them by default, which hid a 100vw overflow (2026-10-24).
+step "no horizontal overflow with real scrollbars, every route at 390/1280/1920" \
+      env OVERFLOW_ROUTES="$ROUTES" bash scripts/serve-and-run.sh python scripts/overflow-proof.py
 kill_port 3131
 # shellcheck disable=SC2086
 step "first-load JS, every route" node scripts/first-load.mjs $ROUTES
@@ -95,7 +100,8 @@ if [ "$TIER" -lt 3 ]; then summary; exit $FAILED; fi
 step "placeholder guard: refuses production, allows presentation and preview, no demo imagery in the shipping output" \
       bash scripts/placeholder-guard-proof.sh
 # Builds a presentation build of its own (the slider has nothing to show otherwise) and restores the shipping one.
-step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure"       bash scripts/slider-proof.sh
+step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure" \
+      bash scripts/slider-proof.sh
 
 summary
 exit $FAILED

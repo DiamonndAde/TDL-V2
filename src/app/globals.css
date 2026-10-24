@@ -283,6 +283,23 @@
       padding-inline: 2rem;
     }
   }
+  /*
+   * Full-bleed grid with named lines (from lg). The content columns match .container-site (75rem less 2rem gutters);
+   * the outer 1fr columns take whatever is left, so `full-end` is the viewport's right edge WITHOUT vw. vw includes
+   * a classic scrollbar, which made the page ~8 px wider than the viewport on Windows (2026-10-24).
+   *   [full-start] gutter [content-start] half [mid] half [content-end] gutter [full-end]
+   */
+  .bleed-grid {
+    @media (min-width: 64rem) {
+      display: grid;
+      grid-template-columns:
+        [full-start] minmax(2rem, 1fr)
+        [content-start] minmax(0, 35.5rem)
+        [mid] minmax(0, 35.5rem)
+        [content-end] minmax(2rem, 1fr)
+        [full-end];
+    }
+  }
   .section-y {
     padding-block: 4rem;
     @media (min-width: 64rem) {

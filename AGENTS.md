@@ -28,6 +28,7 @@ The previous build (`../tdl-website`) supplies content, features, rules and test
 - `cacheComponents: true` and `partialPrefetching: true` (scaffold defaults; keep them). **Every page is static**: the root layout exports `ensureStatic = 'navigation'`, so any request-time rendering fails the build.
 - `params` and `searchParams` are Promises; `await` them. Use the generated `PageProps<'/services/[slug]'>` helpers.
 - Tailwind CSS v4 through the `@tailwindcss/turbopack` loader (`next.config.ts`). Tokens are CSS custom properties in `@theme`.
+- **No `vw` in layout widths, margins or offsets.** `100vw` includes a classic scrollbar, so it overflows by the scrollbar's width on Windows (2026-10-24). Bleed with the `.bleed-grid` named lines or percentages; `vw` belongs only in `sizes`. Custom utilities like `.container-site` outrank responsive Tailwind overrides of the same property on the same element, so don't combine them.
 - `app/sitemap.ts` and `app/robots.ts` are the file conventions. Do not install `next-sitemap`.
 - Redirects live in `redirects()` in `next.config.ts`. `permanent: true` returns **308** and `false` returns **307**; both are fine.
 - JSON-LD is a plain `<script type="application/ld+json">` with `<` replaced by `<`. Not `next/script`.
@@ -123,7 +124,7 @@ Run the smallest tier that covers the change, and **say which tier you ran in ev
 | Tier | When | Command | Runs |
 |---|---|---|---|
 | **1** | Every change | `npm run check` | Lint (0 errors), typecheck, boundary check, plus the targeted tests below |
-| **2** | End of a feature, and **before every push** | `npm run verify` | Tier 1 + production build, scroll regression, reveal test (no-JS and reduced motion), first-load JS on every route |
+| **2** | End of a feature, and **before every push** | `npm run verify` | Tier 1 + production build, scroll regression, reveal test (no-JS and reduced motion), overflow with real scrollbars, first-load JS on every route |
 | **3** | Before a client demo or launch, or on request | `npm run verify:full` | Everything: axe on every route at 1280 and 390, keyboard, reduced motion, redirects, sitemap, robots, JSON-LD, Lighthouse (one route per template), throttled-mobile probe, enquiry form, consent banner, canary masking, recruitment adapter, placeholder guard, home slider |
 
 | If you touched | Also run in Tier 1 |
@@ -134,6 +135,7 @@ Run the smallest tier that covers the change, and **say which tier you ran in ev
 | The home slider, the contact QR, `/brochure` | `npm run test:slider` |
 | The enquiry form | `npm run test:form` |
 | Layout, header, routing, anything that changes page height | `npm run test:scroll` |
+| Anything that changes widths, bleeds or offsets | `npm run test:overflow` |
 | Section reveals, typing, counters | `npm run test:reveal` |
 | Copy or styles only | nothing beyond `npm run check` |
 
