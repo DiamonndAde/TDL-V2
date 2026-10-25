@@ -5,10 +5,11 @@ import { brochureQrTarget, brochureReady } from "@/lib/brochure";
  * The brochure QR code (change 7), drawn as SVG when the page is prerendered: the `qrcode` package runs at build
  * time and the browser gets markup only. Navy modules on white, error correction M, the standard four-module quiet
  * zone. It encodes the stable /brochure address, which redirects to the PDF (next.config.ts, Q32); a demo build
- * encodes the demo's own address and says not to print it.
+ * encodes the demo's own address. No demo note is shown on the page (owner, 2026-10-25): the rule "never print a QR
+ * from a demo build" lives in HANDOFF.md and PLACEHOLDERS.md instead.
  */
 export async function BrochureQr() {
-  const { url, demo } = brochureQrTarget();
+  const { url } = brochureQrTarget();
   const svg = await QRCode.toString(url, {
     type: "svg",
     errorCorrectionLevel: "M",
@@ -32,7 +33,6 @@ export async function BrochureQr() {
             Open {what}
           </a>
         </p>
-        {demo ? <p className="mt-3 rounded-md bg-navy px-3 py-2 text-sm text-white">Demo build: this code points at the demo site. Do not print it.</p> : null}
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ sentence in the accessible text; reduced motion shows it at once with no caret) 
 
 Usage: python scripts/slider-proof.py [screenshot-dir]
 """
-import sys, urllib.request, urllib.error
+import re, sys, urllib.request, urllib.error
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -154,14 +154,15 @@ with sync_playwright() as p:
     check("phone" in src, f"a slide with its own phone crop serves it on a phone ({src[-60:]})")
     ctx.close()
 
-    # ---- the brochure QR on /contact-us (change 7): present, labelled with its target, marked do-not-print in a demo
+    # ---- the brochure QR on /contact-us (change 7): present and labelled with its target. A demo build shows no demo
+    # note on the page (owner, 2026-10-25); the do-not-print rule lives in HANDOFF.md and PLACEHOLDERS.md.
     ctx = b.new_context(viewport={"width": 1280, "height": 900})
     page = ctx.new_page()
     page.goto(BASE + "/contact-us", wait_until="networkidle")
     qr = page.locator("[role=img][aria-label^='QR code for']")
     label = qr.get_attribute("aria-label") if qr.count() else ""
     check(qr.count() == 1 and label.endswith("/brochure"), f"QR on /contact-us encodes /brochure ({label})")
-    check(page.get_by_text("Do not print it").count() == 1, "demo build marks the QR do-not-print")
+    check(page.get_by_text(re.compile(r"demo build|do not print", re.I)).count() == 0, "no demo note is visible on the page")
     check(page.locator("a[href='/brochure']").count() >= 1, "a plain link to /brochure sits beside the code")
     OUT and page.screenshot(path=f"{OUT}/contact-1280.png", full_page=True)
     ctx.close()

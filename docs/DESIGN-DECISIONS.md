@@ -195,3 +195,8 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
   - Fixes: PowerShell `Stop-Process` by port; the stub binds without address reuse (a second stub now fails with WinError 10048, seen); `analytics-proof.sh` stops if the stub does not start.
   - Clean rerun: 16 payloads (12 event, 4 replay), the failure path exercised, no canary token, and nothing left on 3132 afterwards.
 - **Lighthouse** (simulated, mobile, same build): accessibility 100 and CLS 0.000 on all nine template routes; performance 63–88, LCP 2.9–3.5 s, TBT 230–1,460 ms. Recorded, not gated, as in v1. Lantern on localhost bills framework bootup to LCP, and this machine was under load.
+
+## 2026-10-25 — No demo note on the contact page; home LCP measured on the live demo
+
+- **The contact page shows no demo note.** The "Demo build: this code points at the demo site. Do not print it." line is gone (owner); nothing demo-related is visible on any page. The rule, never print a QR from a demo build, is in `HANDOFF.md` and `PLACEHOLDERS.md`. The slider test now asserts that no demo note is visible on `/contact-us`, where it used to assert the note was there.
+- **Home LCP closed.** PageSpeed Insights, mobile (Moto G Power, slow 4G, Lighthouse 13.5), on https://tdlv2-three.vercel.app/, three separate analyses at 02:23, 02:25 and 02:26: LCP **1.8, 2.3, 2.3 s**; FCP 0.9, 1.2, 0.9 s; TBT 0–20 ms; CLS 0; performance 100, 96, 99. There is no field (CrUX) data for the demo host. All three runs are under 2.5 s, so the page is unchanged; the local probe's slow runs came from this machine's load. The key-less PSI API was over its daily quota, so the runs went through pagespeed.web.dev, which runs the same analysis on Google's servers.

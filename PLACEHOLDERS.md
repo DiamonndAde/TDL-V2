@@ -4,6 +4,8 @@ Shipping builds show TDL's own photographs, real client logos and the TDL logo, 
 
 **No demo image carries a visible label, credit or caption on the page** (owner, 2026-10-24). This file is where the sources, photographers and licences are recorded instead.
 
+**Never print a QR code from a demo build.** A demo build's brochure QR on `/contact-us` encodes the demo deployment's own `/brochure`, and a printed copy dies with the demo. Print it only from the live site (`totaldatalimited.com/contact-us`), whose code encodes `totaldatalimited.com/brochure`. The page itself carries no demo note (owner, 2026-10-25), so this rule lives here and in `HANDOFF.md`.
+
 ## It cannot ship by accident
 
 - The default is off. `PLACEHOLDER_IMAGES` is unset or `false` in every environment unless someone sets it for a demo.
