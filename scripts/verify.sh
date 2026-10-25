@@ -104,6 +104,15 @@ step "first-load JS, every route" node scripts/first-load.mjs $ROUTES
 if [ "$TIER" -lt 3 ]; then summary; exit $FAILED; fi
 
 # ── Tier 3 ─────────────────────────────────────────────────────────────────────────────────────────────────
+# On the shipping build from Tier 2, before anything below rebuilds.
+step "harden: URLs and redirects, sitemap, robots, noindex, JSON-LD, unique titles, axe 15 routes x 1280/390, keyboard, reduced motion"       bash scripts/serve-and-run.sh python scripts/harden.py
+step "throttled mobile (cold, median of 3): LCP, CLS, interaction latency, scroll-fling"       bash scripts/serve-and-run.sh python scripts/android-probe.py
+# Git Bash by absolute path: a bare "bash" launched from Windows Python resolves to WSL's System32ash.exe, which
+# ran nothing and printed "done" (2026-10-25).
+GIT_BASH="$(cygpath -w "$BASH")"
+LH_DIR="$(cygpath -m "$WORK")/lh"
+step "Lighthouse, one route per template (only its own Chrome is killed between runs)"       bash scripts/serve-and-run.sh "$GIT_BASH" scripts/lh-clean.sh "$LH_DIR" simulate _ services services/payroll-management about-us work contact-us become-a-client careers privacy-policy
+step "Lighthouse gate (a11y 100, CLS < 0.1; performance recorded, not gated)" node scripts/lighthouse-gate.mjs "$LH_DIR"
 step "placeholder guard: refuses production, allows presentation and preview, no demo imagery in the shipping output" \
       bash scripts/placeholder-guard-proof.sh
 step "enquiry form: validation, keyboard, delivery to a webhook stand-in, delivery failure, honeypot" \

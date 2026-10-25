@@ -6,7 +6,6 @@ import { company, process } from "@/content/facts";
 import { BrochureQr } from "@/components/contact/brochure-qr";
 import { PageHeader } from "@/components/layout/page-header";
 import { Reveal } from "@/components/motion/reveal";
-import { JsonLd } from "@/components/seo/json-ld";
 import { PartnerCta } from "@/components/ui/partner-cta";
 
 export const metadata: Metadata = {
@@ -72,7 +71,6 @@ export default function ContactPage() {
   ];
   return (
     <main id="main">
-      <JsonLd include={["localBusiness"]} />
       <PageHeader eyebrow="Contact" title="Call, message, or come to" accent="Ilupeju." lead={process.responsePromise} actions={<PartnerCta location="contact" />} />
 
       <section aria-label="Ways to reach us" className="bg-white">

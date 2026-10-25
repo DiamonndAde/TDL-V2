@@ -7,7 +7,6 @@ import { CtaBand } from "@/components/layout/cta-band";
 import { PageHeader } from "@/components/layout/page-header";
 import { QuotePanel } from "@/components/home/quote-panel";
 import { Reveal } from "@/components/motion/reveal";
-import { JsonLd } from "@/components/seo/json-ld";
 import { FeatureCard } from "@/components/ui/feature-card";
 import { Monogram } from "@/components/ui/monogram";
 import { PhotoFrame } from "@/components/ui/photo-frame";
@@ -29,7 +28,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main id="main">
-      <JsonLd />
       <PageHeader
         eyebrow="About us"
         title="Other companies’ people, run as"

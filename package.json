@@ -21,6 +21,8 @@
     "test:form": "bash scripts/form-proof.sh",
     "test:links": "bash scripts/serve-and-run.sh python scripts/link-proof.py",
     "test:provider": "node --experimental-strip-types --no-warnings scripts/provider-proof.mjs",
+    "test:harden": "bash scripts/serve-and-run.sh python scripts/harden.py docs/screenshots",
+    "test:android": "bash scripts/serve-and-run.sh python scripts/android-probe.py",
     "test:consent": "bash scripts/analytics-proof.sh consent docs/screenshots",
     "test:masking": "bash scripts/analytics-proof.sh masking"
   },

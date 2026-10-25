@@ -96,5 +96,10 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     open(CAPTURE, "wb").close()
+    # No address reuse: on Windows SO_REUSEADDR lets a second stub bind the same port and share its traffic, which sent
+    # one run's payloads into another run's capture file and left this run's empty (2026-10-25). Bind first, so a busy
+    # port fails here, before the ready line that scripts/analytics-proof.sh waits for.
+    HTTPServer.allow_reuse_address = False
+    server = HTTPServer(("127.0.0.1", PORT), Handler)
     print(f"posthog stub on {PORT}, capturing to {CAPTURE}", flush=True)
-    HTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+    server.serve_forever()

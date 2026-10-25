@@ -161,3 +161,37 @@ The hue moves 5° toward green (77° → 82°). At 77° and this lightness the c
 - `FailureReason` has one definition (`src/lib/form-result.ts`); the event contract re-exports it.
 - **Tests:** `npm run test:consent` and `npm run test:masking` (Tier 3, via `scripts/analytics-proof.sh`) build with a key pointed at the local PostHog stand-in, run the proofs, and restore the shipping build. Masking: 16 payloads captured (12 event, 4 replay), the failed-submission path ran, and no canary token appears under any decoding. The masking test was seen to fail when the stub could not open a Git Bash `/tmp` path (0 payloads, four failures); Python now gets Windows paths. The boundary check's analytics section now runs.
 - **`.env.local` holds a demo PostHog key.** `verify.sh` and every test script set it empty, so shipping builds carry none. Vercel builds from its own variables, so production stays analytics-off until a key is added there (Q30). `next dev` locally will show the banner.
+
+## 2026-10-25 — Tier 3 in full (step 12)
+
+- **`scripts/harden.py` rewritten for v2** (v1's tested the Roster canvas and service tabs). It checks:
+  - every route serves 200, and its trailing-slash form 308s to it;
+  - every redirect is a single 308 (the 307 for `/brochure`) to a page that answers 200;
+  - WordPress leftovers end in a clean 404;
+  - the sitemap holds exactly the indexable routes; robots points at it; `/insights` is noindex;
+  - a `*.vercel.app` host gets `X-Robots-Tag` and the real host does not;
+  - JSON-LD parses with no raw `<` and no duplicate `@id`, with Organization and LocalBusiness on every page and the right Service nodes;
+  - every title and meta description is unique;
+  - axe on 15 routes at 1280 and 390;
+  - keyboard paths: skip link, header, testimonial links in order to real anchors, the marquee pause, the phone popover menu (Enter, Tab inside, Escape back to the toggle) and the three-step form;
+  - reduced motion: figures final at t=0, nothing animating after a full scroll, the headline whole.
+- **First run found a real defect:** `/about-us` and `/contact-us` rendered Organization and LocalBusiness again on top of the root layout's, duplicating the `@id`s. Removed. The header hairline is a scroll-driven timeline and is excluded from the "nothing animating" check: it tracks scroll position, not time.
+- **Throttled-mobile probe ported with three corrections:**
+  1. **Loads are cold**, in a fresh context. v1 reused one context, so every route after the first loaded on cached framework chunks.
+  2. **Three runs per route, gated on the median.** Single cold runs of one build spread from 1.6 to 2.7 s on this machine.
+  3. **Only real interactions count** (`interactionId`, as INP is defined). Each control is scrolled into view and settled before the tap, and each step is gated on the median of three rounds. Letting Playwright scroll inside the action billed 4.2 s to one radio tap, while a 500 px page scroll reached its next frame in 24 ms; one round of the same tap read 104 ms and then 208 ms.
+- **Measured** (4× CPU, 150 ms RTT, 1.6 Mbps, 412×823). This was taken with the owner's own Chrome and another project's server holding the CPU at about 48%, so absolute numbers run high.
+  - Final run: inner routes median LCP 1.1–1.6 s; home 2.28 s (runs 1.92, 2.28, 2.84). Worst median interaction 176 ms (home, next testimonial). CLS 0.000 everywhere. The fling's longest task is 78 ms.
+  - **Home stays open.** Its median passed in the last two runs (1.86 and 2.28 s) but read 3.1 s in two earlier ones, and its slowest single runs exceed 2.5 s; one paired run had home and `/services` at the same FCP. The trace shows a race. Home's first render (style plus layout, about 0.9 s at 4×, twice the nodes of an inner page) is followed by hydration in the 72 KB framework chunk (0.7–1.3 s at 4×). When that chunk lands before the first frame commits, hydration holds the paint. v1 recorded the same drift on `/` ("≤ 2.0 s median, one run in five over 2.5 s").
+  - Ruled out: `content-visibility: auto` on below-fold sections made it no faster (A/B, five cold runs each).
+  - Next step: measure on a quiet machine or with PageSpeed Insights on the deployed site before changing the page.
+- **Lighthouse runner fixed twice:**
+  - v1 force-killed every `chrome.exe` between runs, which closes the owner's browser. It now runs Lighthouse on Playwright's Chromium and kills only that executable's Lighthouse profiles.
+  - Launched from Windows Python, a bare `bash` resolved to WSL's `System32\bash.exe`, which ran nothing and printed "done". Tier 3 now passes Git Bash's absolute path.
+  - The gate is unchanged from v1: accessibility 100 and CLS < 0.1 are gated; simulated performance is recorded, not gated.
+- **Masking test: a stale-stub bug, found by the first full Tier 3 run** (0 payloads inside `verify.sh`).
+  - `analytics-proof.sh` killed the stub with `taskkill //F`, but with `MSYS_NO_PATHCONV=1` exported the double slashes reach Windows and the kill fails silently. Four stubs from this session were still listening on 3132.
+  - Python's `HTTPServer` sets `SO_REUSEADDR`, which on Windows lets a second process bind the same port, so a new stub shared traffic with old ones. The earlier standalone pass was reading a capture file that an older stub also wrote to.
+  - Fixes: PowerShell `Stop-Process` by port; the stub binds without address reuse (a second stub now fails with WinError 10048, seen); `analytics-proof.sh` stops if the stub does not start.
+  - Clean rerun: 16 payloads (12 event, 4 replay), the failure path exercised, no canary token, and nothing left on 3132 afterwards.
+- **Lighthouse** (simulated, mobile, same build): accessibility 100 and CLS 0.000 on all nine template routes; performance 63–88, LCP 2.9–3.5 s, TBT 230–1,460 ms. Recorded, not gated, as in v1. Lantern on localhost bills framework bootup to LCP, and this machine was under load.

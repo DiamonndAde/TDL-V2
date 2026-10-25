@@ -2,7 +2,8 @@ import { company, figures } from "@/content/facts";
 import { services } from "@/content/services";
 
 /**
- * Organization + LocalBusiness for the site, and one Service per service line. Rendered as a plain script tag
+ * Organization + LocalBusiness for the site (once, from the root layout: a page that renders them again duplicates
+ * the @id, which scripts/harden.py fails), and one Service per service line. Rendered as a plain script tag
  * with `<` escaped to the six characters `\u003c` (the string literal needs the double backslash; v1 had a single one, which replaced `<` with itself); `next/script` is for executable code.
  */
 export function JsonLd({

@@ -22,14 +22,16 @@ export NEXT_PUBLIC_POSTHOG_KEY=phc_verify NEXT_PUBLIC_POSTHOG_HOST=http://127.0.
 stop_servers() {
   powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { \$_.CommandLine -match 'next[^ ]* start' } | ForEach-Object { Stop-Process -Id \$_.ProcessId -Force -ErrorAction SilentlyContinue }" >/dev/null 2>&1 || true
 }
+# PowerShell, not taskkill: with MSYS_NO_PATHCONV=1 exported, "taskkill //F" reaches Windows with the double slashes
+# and fails silently, which left four stubs listening on 3132 (2026-10-25).
 stop_stub() {
-  for pid in $(netstat -ano 2>/dev/null | grep -E "[:.]3132 .*LISTENING" | awk '{print $NF}' | sort -u); do
-    taskkill //F //T //PID "$pid" >/dev/null 2>&1 || true
-  done
+  powershell -NoProfile -Command "Get-NetTCPConnection -LocalPort 3132 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id \$_ -Force -ErrorAction SilentlyContinue }" >/dev/null 2>&1 || true
 }
 log="$out/build.log"
 stop_stub
 python scripts/posthog-stub.py 3132 "$capture" >"$out/stub.log" 2>&1 &
+sleep 1
+if ! grep -q "posthog stub on 3132" "$out/stub.log"; then echo "the PostHog stub did not start:"; cat "$out/stub.log"; exit 1; fi
 echo "analytics-on build (key → local stub)…"
 stop_servers
 rc=0
