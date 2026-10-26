@@ -13,3 +13,13 @@ const Runtime = lazyGate(() => import("./analytics-runtime"));
 export function Analytics() {
   return <LazyWhen enabled={analyticsConfigured} component={Runtime} />;
 }
+
+/**
+ * The cookie notice, only while analytics is off: with a key the consent banner (inside the runtime above) replaces
+ * it, so a visitor never sees both. Its own chunk, loaded after hydration, so no route's first-load JS carries it.
+ */
+const Notice = lazyGate(() => import("./cookie-notice"));
+
+export function CookieNotice() {
+  return <LazyWhen enabled={!analyticsConfigured} component={Notice} />;
+}

@@ -359,6 +359,40 @@ with sync_playwright() as p:
     if OUT:
         pg.screenshot(path=str(OUT / "harden-reduced-motion-1280.png"))
     ctx.close()
+
+    # ------------------------------------------------------------ 7. cookie notice (analytics off)
+    print("\n7. Cookie notice")
+    NOTICE = "section[aria-label='Cookies']"
+    for width in (390, 1280):
+        ctx = b.new_context(viewport={"width": width, "height": 800})
+        ctx.add_init_script("""window.__lcp = null; window.__cls = 0;
+          new PerformanceObserver(l => { for (const e of l.getEntries()) window.__lcp = e.element; }).observe({type: 'largest-contentful-paint', buffered: true});
+          new PerformanceObserver(l => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value; }).observe({type: 'layout-shift', buffered: true});""")
+        pg = ctx.new_page()
+        pg.goto(BASE + "/services")
+        pg.wait_for_load_state("load")
+        pg.wait_for_timeout(2500)
+        shown = pg.locator(NOTICE).count() == 1
+        check(shown, f"{width}px: the notice shows on a first visit")
+        if not shown:
+            ctx.close()
+            continue
+        link = pg.locator(f"{NOTICE} a[href='/cookies-policy']").count()
+        check(link == 1, f"{width}px: it links to the Cookies policy")
+        m = pg.evaluate("() => ({inNotice: !!(window.__lcp && window.__lcp.closest(\"section[aria-label='Cookies']\")), cls: window.__cls, focus: document.activeElement.tagName})")
+        check(not m["inNotice"] and m["cls"] < 0.01 and m["focus"] == "BODY", f"{width}px: not the LCP element, no layout shift, focus left alone", json.dumps(m))
+        if OUT:
+            pg.screenshot(path=str(OUT / f"cookie-notice-{width}.png"))
+        pg.get_by_role("button", name="OK", exact=True).click()
+        pg.wait_for_timeout(300)
+        check(pg.locator(NOTICE).count() == 0, f"{width}px: OK hides it")
+        pg.reload()
+        pg.wait_for_load_state("load")
+        pg.wait_for_timeout(2500)
+        check(pg.locator(NOTICE).count() == 0, f"{width}px: it stays dismissed after a reload")
+        ctx.close()
+    _, _, home = fetch("/")
+    check('href="/cookies-policy"' in home[home.find("<footer"):], "the footer links the Cookies policy")
     b.close()
 
 print("\nFAILURES:", ", ".join(fails) if fails else "none")

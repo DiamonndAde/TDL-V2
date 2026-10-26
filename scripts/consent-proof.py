@@ -95,6 +95,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(1500)
     banner = pg.locator("section[aria-labelledby='consent-title']")
     check(banner.count() == 1, "banner present with a project key configured")
+    check(pg.locator("section[aria-label='Cookies']").count() == 0, "the cookie notice is replaced by the consent banner (never both)")
     accept = pg.get_by_role("button", name="Accept", exact=True)
     reject = pg.get_by_role("button", name="Reject", exact=True)
     check(accept.count() == 1 and reject.count() == 1, "both choices are buttons in the banner")
