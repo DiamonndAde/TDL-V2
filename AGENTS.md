@@ -83,7 +83,7 @@ Buttons follow the WordPress pattern: a pill label with a separate round arrow (
 - Never a stock or generated face in a frame that names a person (testimonial executives, leadership, board). Those take an initials monogram or stay reserved. Never use a photograph in a frame captioned as TDL's own office, address, staff or a named person.
 - Never copy a WordPress image, icon or logo file (audit §7).
 
-**Links.** No link points at `#`, a theme demo or `wp-admin`. "Partner with us" opens WhatsApp (`https://wa.me/2348185461010` with the prefilled message from `facts.ts`), in a new tab, with the accessible name "Partner with us on WhatsApp". The Paytrail staff login (`https://paytrail-tdl.com/login`) appears in the header and the footer.
+**Links.** No link points at `#`, a theme demo or `wp-admin`. "Partner with us" opens WhatsApp (`https://wa.me/2348185461010` with the prefilled message from `facts.ts`), in a new tab, with the accessible name "Partner with us on WhatsApp". The Paytrail staff login (`https://paytrail-tdl.com/login`) appears in the footer only (TDL moved it out of the header on 2026-10-26; Blog took its place).
 
 **SEO.** Preserve or redirect every existing URL (the old repo's routes and redirects, plus the WordPress-only paths in `docs/PLAN.md` §2). Give every page a unique title and meta description. Add JSON-LD for Organization, LocalBusiness and each Service. Any `*.vercel.app` host gets `X-Robots-Tag: noindex, nofollow`.
 

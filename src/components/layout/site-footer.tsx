@@ -5,7 +5,6 @@ import { PartnerCta } from "@/components/ui/partner-cta";
 import { ConsentReopen } from "./consent-reopen";
 import { CopyrightYear } from "./copyright-year";
 import { Logo } from "./logo";
-import { StaffLoginLink } from "./site-header";
 
 /**
  * The WordPress footer was one copyright line on #212121 (audit §2.12). Same ground, now carrying what a buyer
@@ -103,5 +102,21 @@ function FooterList({ title, items }: { title: string; items: { href: string; la
         ))}
       </ul>
     </div>
+  );
+}
+
+/** The Paytrail staff login (change 1): footer only since 2026-10-26 (TDL). A link, never a button; opens in a new tab.
+ * Label from facts.ts (Q31). */
+function StaffLoginLink({ className = "", label }: { className?: string; label: string }) {
+  return (
+    <a
+      href={company.staffPortal.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`underline decoration-accent decoration-2 underline-offset-[6px] transition-colors hover:text-accent-strong ${className}`}
+    >
+      {label}
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
   );
 }

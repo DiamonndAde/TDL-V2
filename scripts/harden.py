@@ -224,7 +224,11 @@ with sync_playwright() as p:
         stops.append(f)
     names = [s["name"] for s in stops]
     check(all(s["ring"] for s in stops), "every header stop shows a focus ring", " | ".join(names))
-    check(any("Paytrail" in n or "staff login" in n.lower() for n in names), "header: the Paytrail staff login is reachable", " | ".join(names))
+    check(any(n == "Blog" for n in names), "header: Blog is reachable", " | ".join(names))
+    check(not any("Paytrail" in n or "staff login" in n.lower() for n in names), "header: no Paytrail link (footer only, TDL 2026-10-26)", " | ".join(names))
+    _, _, home = fetch("/")
+    footer = home[home.find("<footer"):]
+    check("paytrail-tdl.com/login" in footer, "footer: the Paytrail staff login is still there")
     check(any(n == "Partner with us on WhatsApp" for n in names), "header: Partner with us is reachable, named for WhatsApp", " | ".join(names))
 
     links = pg.locator("a[href^='/work#']")

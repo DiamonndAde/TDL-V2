@@ -51,7 +51,6 @@ export const company = {
    */
   staffPortal: {
     url: "https://paytrail-tdl.com/login",
-    headerLabel: "Paytrail staff login",
     footerLabel: "Paytrail staff login portal",
   },
 } as const;
