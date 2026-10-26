@@ -14,7 +14,7 @@ import type { ServiceSlug } from "@/content/services";
 /** Form field identifiers. Names, never values — and a closed list so a typo cannot smuggle one in. */
 export type FieldName =
   // talent pool (/careers)
-  | "name" | "email" | "phone" | "location" | "area" | "message" | "consent"
+  | "name" | "email" | "phone" | "location" | "position" | "message" | "consent"
   // enquiry (/become-a-client)
   | "services" | "headcount" | "organisation" | "industry" | "arrangement" | "role" | "contactTime";
 

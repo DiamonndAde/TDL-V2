@@ -135,7 +135,7 @@ with sync_playwright() as p:
     ])
     interact("/careers", [
         ("type name", pg.locator("#ap-name"), ("fill", "Ada")),
-        ("choose area", pg.locator("#ap-area"), ("select", 1)),
+        ("type position", pg.locator("#ap-position"), ("fill", "Payroll officer")),
         ("consent", pg.locator("input[type=checkbox]").last, "check"),
     ])
 

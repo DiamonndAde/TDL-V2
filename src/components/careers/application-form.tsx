@@ -3,9 +3,8 @@
 import { useState, useTransition } from "react";
 import { useForm, type FieldErrors, type Resolver } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { ChoiceRow, Field, Input, Select, Textarea } from "@/components/ui/field";
+import { ChoiceRow, Field, Input, Textarea } from "@/components/ui/field";
 import { company } from "@/content/facts";
-import { services } from "@/content/services";
 import { submitApplication, type ApplyResult } from "@/app/careers/actions";
 import { track } from "@/lib/analytics/track";
 import { useFieldTracking } from "@/lib/analytics/use-field-tracking";
@@ -33,13 +32,13 @@ export function ApplicationForm() {
   const [result, setResult] = useState<ApplyResult | null>(null);
   const [pending, startTransition] = useTransition();
   // Field order for the funnel: the index makes "how far did they get" answerable without reading anything.
-  const FIELDS: FieldName[] = ["name", "email", "phone", "location", "area", "message", "consent"];
+  const FIELDS: FieldName[] = ["name", "email", "phone", "location", "position", "message", "consent"];
   const field = useFieldTracking("talent_pool", FIELDS, () => track({ name: "talent_pool_started" }));
 
   const { register, handleSubmit, formState } = useForm<Application>({
     resolver,
     mode: "onTouched",
-    defaultValues: { name: "", email: "", phone: "", location: "", area: "", message: "", consent: undefined, website: "" },
+    defaultValues: { name: "", email: "", phone: "", location: "", position: "", message: "", consent: undefined, website: "" },
   });
   const errors = formState.errors;
 
@@ -90,18 +89,8 @@ export function ApplicationForm() {
           <Input id="ap-location" autoComplete="address-level2" invalid={!!errors.location} {...register("location")} onFocus={field.onFocus("location")} onBlur={field.onBlur("location")} />
         </Field>
       </div>
-      <Field label="Area of work" htmlFor="ap-area" error={errors.area?.message}>
-        <Select id="ap-area" defaultValue="" invalid={!!errors.area} {...register("area")} onFocus={field.onFocus("area")} onBlur={field.onBlur("area")}>
-          <option value="" disabled>
-            Choose one
-          </option>
-          {services.map((s) => (
-            <option key={s.slug} value={s.name}>
-              {s.name}
-            </option>
-          ))}
-          <option value="Other">Something else</option>
-        </Select>
+      <Field label="Position you’re applying for" htmlFor="ap-position" hint="For example, payroll officer or driver." error={errors.position?.message}>
+        <Input id="ap-position" invalid={!!errors.position} {...register("position")} onFocus={field.onFocus("position")} onBlur={field.onBlur("position")} />
       </Field>
       <Field label="Anything we should know" htmlFor="ap-message" hint="Experience, the kind of role you want, a link to your CV. Optional." error={errors.message?.message}>
         <Textarea id="ap-message" invalid={!!errors.message} {...register("message")} onFocus={field.onFocus("message")} onBlur={field.onBlur("message")} />
@@ -138,7 +127,7 @@ export function ApplicationForm() {
 
 /** How many questions were answered. A count, never the answers. */
 function countAnswered(d: Application): number {
-  return (["name", "email", "phone", "location", "area", "message"] as const).filter(
+  return (["name", "email", "phone", "location", "position", "message"] as const).filter(
     (k) => typeof d[k] === "string" && (d[k] as string).trim().length > 0,
   ).length;
 }

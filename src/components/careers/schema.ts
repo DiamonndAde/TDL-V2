@@ -8,7 +8,8 @@ export const applicationSchema = z.object({
     .string()
     .check(z.trim(), z.regex(/^\+?[0-9 ()-]{7,20}$/, "Enter a phone number, digits only, with or without the country code.")),
   location: z.string().check(z.trim(), z.minLength(2, "Enter the city or state you are in.")),
-  area: z.string().check(z.trim(), z.minLength(2, "Choose the area of work.")),
+  // Free text since 2026-10-26 (TDL): it replaced the "Area of work" list of service lines.
+  position: z.string().check(z.trim(), z.minLength(2, "Enter the position you are applying for."), z.maxLength(120, "Keep it under 120 characters.")),
   message: z.string().check(z.trim(), z.maxLength(2000, "Keep it under 2,000 characters.")),
   consent: z.literal(true, { error: "Tick the box so we can process your details under the NDPR." }),
   website: z.optional(z.string().check(z.maxLength(0))),

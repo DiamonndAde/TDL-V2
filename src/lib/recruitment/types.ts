@@ -33,8 +33,8 @@ export interface CandidateDraft {
   phone: string;
   /** City or state the person gave. */
   location: string;
-  /** Service line they want to work in. */
-  area: string;
+  /** The position they are applying for, in their words (free text since 2026-10-26; was a service line). */
+  position: string;
   /** Free text; may be empty. */
   message: string;
   /** ISO timestamp of the NDPR consent tick, so the provider records when consent was given. */

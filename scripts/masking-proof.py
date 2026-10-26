@@ -34,12 +34,13 @@ CANARIES = {
     "email": "canary9email@zqxtoken.test",
     "phone": "08001234567",
     "location": "Canaryville Zqx",
+    "position": "Zqxposition Canaryofficer",
     "message": "CANARYFREETEXT hidden sentence about my salary expectations zqx.",
     "organisation": "Zqx Canary Holdings",
     "industry": "Canary industry zqx",
 }
 TOKENS = ["Zqxcanary", "Nametoken7", "canary9email", "zqxtoken", "08001234567", "Canaryville",
-          "CANARYFREETEXT", "salary expectations", "Zqx Canary", "Canary industry"]
+          "CANARYFREETEXT", "salary expectations", "Zqxposition", "Canaryofficer", "Zqx Canary", "Canary industry"]
 
 failures: list[str] = []
 
@@ -119,10 +120,10 @@ with sync_playwright() as p:
 
     for sel, value in [("#ap-name", CANARIES["name"]), ("#ap-email", CANARIES["email"]),
                        ("#ap-phone", CANARIES["phone"]), ("#ap-location", CANARIES["location"]),
+                       ("#ap-position", CANARIES["position"]),
                        ("#ap-message", CANARIES["message"])]:
         pg.fill(sel, value)
         pg.wait_for_timeout(150)
-    pg.select_option("#ap-area", index=1)
     pg.locator("input[type=checkbox]").last.check()
     pg.wait_for_timeout(6000)
 

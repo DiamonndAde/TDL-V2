@@ -25,14 +25,14 @@ export async function submitApplication(data: Application): Promise<ApplyResult>
   const parsed = parseApplication(data);
   if (!parsed.success) return { ok: false, error: "Some answers need attention. Check the form and try again.", reason: "validation" };
   if (parsed.data.website) return { ok: true }; // honeypot
-  const { name, email, phone, location, area, message } = parsed.data;
+  const { name, email, phone, location, position, message } = parsed.data;
 
   const draft: CandidateDraft = {
     name,
     email,
     phone,
     location,
-    area,
+    position,
     message,
     consentAt: new Date().toISOString(),
     source: "totaldatalimited.com/careers",
@@ -57,7 +57,7 @@ export async function submitApplication(data: Application): Promise<ApplyResult>
     const note = await provider.addNote(created.value.id, {
       title: "Talent pool submission from totaldatalimited.com",
       content: [
-        `Area of work: ${draft.area}`,
+        `Position applying for: ${draft.position}`,
         `Based in: ${draft.location}`,
         `Consent to processing under the NDPR: yes, ${draft.consentAt}`,
         "",

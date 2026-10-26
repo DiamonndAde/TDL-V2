@@ -46,7 +46,7 @@ const check = (ok, label, detail = "") => {
 
 const DRAFT = {
   name: "Ada Nwosu", email: "ada@example.com", phone: "+234 800 000 0000",
-  location: "Lagos", area: "Payroll Management", message: "Six years in payroll.",
+  location: "Lagos", position: "Payroll officer", message: "Six years in payroll.",
   consentAt: "2026-09-29T10:00:00.000Z", source: "totaldatalimited.com/careers",
 };
 
