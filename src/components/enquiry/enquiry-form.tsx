@@ -11,7 +11,6 @@ import { submitEnquiry, type SubmitResult } from "@/app/become-a-client/actions"
 import { track } from "@/lib/analytics/track";
 import { useFieldTracking } from "@/lib/analytics/use-field-tracking";
 import type { FieldName } from "@/lib/analytics/events";
-import { inSentence } from "@/lib/text";
 import { arrangementOptions, contactTimeOptions, headcountOptions, parseEnquiry, stepFields, type Enquiry } from "./schema";
 
 /**
@@ -302,7 +301,7 @@ function Success({ services: chosen }: { services: ServiceSlug[] }) {
         </li>
         <li className="flex gap-4 rounded-lg bg-mist p-5">
           <span className="font-display text-xl font-bold text-accent-strong">2</span>
-          <span>We talk through {names.length ? names.map((n) => (n ? inSentence(n) : "")).join(", ") : "what you need"} and the people involved.</span>
+          <span>We talk through {names.length ? names.filter(Boolean).join(", ") : "what you need"} and the people involved.</span>
         </li>
         {/* TODO(client): Q12 — a fuller process (scoping session, proposal inside five working days) needs the
             client's approval before it is promised here. Only the site's own 24-hour line is stated. */}

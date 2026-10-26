@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { wordpressCopy } from "@/content/facts";
 import { services } from "@/content/services";
-import { inSentence } from "@/lib/text";
 import { serviceIcons } from "@/components/services/service-icons";
 import { Reveal } from "@/components/motion/reveal";
 import { TypedWords } from "@/components/motion/typed-words";
@@ -11,7 +10,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 
 /**
  * "TDL Core services" (audit §2.6–2.8): a charcoal band; each service is a large frame with a coal card overlapping
- * its inner edge, the side alternating. All seven lines (WordPress dropped Technology solutions), each card linking
+ * its inner edge, the side alternating. All seven lines (WordPress dropped Technology Solutions), each card linking
  * to its page. Service copy is v1's (Q23); the band's sub-line is the WordPress one (Q33).
  */
 export function ServiceRows() {
@@ -56,7 +55,7 @@ export function ServiceRowList({ className = "", as: Heading = "h3" }: { classNa
               <div aria-hidden="true" className={`mt-5 h-px w-2/3 bg-white/70 ${flip ? "lg:-ml-16" : "lg:-mr-16 lg:ml-auto"}`} />
               <p className="mt-5 leading-[1.85] text-on-dark-muted">{s.lead}</p>
               <Link href={`/services/${s.slug}`} className="mt-6 inline-flex items-center gap-2 font-bold text-accent-on-dark hover:underline">
-                Read about {inSentence(s.name)}
+                Read about {s.name}
                 <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </Reveal>

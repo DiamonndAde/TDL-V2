@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CircleCheckBig } from "lucide-react";
 import { services, type Service } from "@/content/services";
-import { inSentence } from "@/lib/text";
 import { CtaBand } from "@/components/layout/cta-band";
 import { PageHeader } from "@/components/layout/page-header";
 import { Reveal } from "@/components/motion/reveal";
@@ -60,7 +59,7 @@ export function ServicePage({ service }: { service: Service }) {
         </div>
       </section>
 
-      <CtaBand title={`Hand us ${inSentence(service.name)}.`} service={scoped} />
+      <CtaBand title={`Hand us ${service.name}.`} service={scoped} />
 
       <section aria-labelledby="other-services" className="bg-white">
         <div className="container-site section-y">

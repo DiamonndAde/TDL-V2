@@ -1,4 +1,3 @@
-import { inSentence } from "@/lib/text";
 
 /**
  * Every number and claim on the site lives here, once.
@@ -33,7 +32,7 @@ export const company = {
    */
   whatsappMessage: {
     general: "Hello Total Data Limited, I would like to talk about partnering with you.",
-    service: (serviceName: string) => `Hello Total Data Limited, I would like to talk about ${inSentence(serviceName)}.`,
+    service: (serviceName: string) => `Hello Total Data Limited, I would like to talk about ${serviceName}.`,
   },
   iso: "ISO 9001:2015",
   ndpr: "Nigeria Data Protection Regulations 2019",

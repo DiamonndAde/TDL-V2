@@ -8,7 +8,7 @@ import { wordpressCopy } from "@/content/facts";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Seven service lines from Total Data Limited: HR outsourcing, business process outsourcing, recruitment and background checks, learning and development, payroll, business advisory and technology.",
+    "Seven service lines from Total Data Limited: HR Outsourcing, Business Process Outsourcing, Recruitment and Background Checks, Learning and Development, Payroll Management, Business Advisory and Technology Solutions.",
   alternates: { canonical: "/services" },
 };
 

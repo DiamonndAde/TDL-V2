@@ -97,7 +97,7 @@ with sync_playwright() as p:
         except Exception:
             j = {}
         check(r["path"] == "/hook" and r["type"].startswith("application/json"), f"POSTed JSON to FORM_WEBHOOK_URL ({r['path']}, {r['type']})")
-        check(j.get("services") == ["Payroll management"], f"services as names ({j.get('services')})")
+        check(j.get("services") == ["Payroll Management"], f"services as names ({j.get('services')})")
         check(j.get("headcount") == hc, f"headcount carried ({j.get('headcount')} vs {hc})")
         check(j.get("organisation") == "Example Foods Nigeria" and j.get("location") == "Agbara, Ogun" and j.get("arrangement") == "provider", "organisation, location and arrangement carried")
         c = j.get("contact", {})

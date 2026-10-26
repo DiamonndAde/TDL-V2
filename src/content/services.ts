@@ -37,7 +37,7 @@ export interface Service {
 export const services: Service[] = [
   {
     slug: "human-resources-outsourcing",
-    name: "HR outsourcing",
+    name: "HR Outsourcing",
     removes: "Contracts, onboarding, performance, welfare and exits, run by us under your name.",
     lead:
       "The whole employment relationship, from the first day to the last, handled by a team that does this for thousands of people already. Your managers keep the work; we keep the records, the process and the compliance.",
@@ -51,11 +51,11 @@ export const services: Service[] = [
     ],
     includes: ["Employee onboarding", "Employee performance", "Talent management", "Exit management"],
     metaDescription:
-      "HR outsourcing from Total Data Limited: sourcing, onboarding, employee relations, performance, talent and exit management for staff across Nigeria and Benin Republic.",
+      "HR Outsourcing from Total Data Limited: sourcing, onboarding, employee relations, performance, talent and exit management for staff across Nigeria and Benin Republic.",
   },
   {
     slug: "business-process-outsourcing",
-    name: "Business process outsourcing",
+    name: "Business Process Outsourcing",
     removes: "Finance, accounting, legal process and facilities work handled as a function, not a project.",
     lead:
       "Whole functions run for you, with the people, the process and the accountability in one place. You keep the decisions; we keep them running.",
@@ -67,11 +67,11 @@ export const services: Service[] = [
     ],
     includes: ["Business function outsourcing", "Finance and accounting outsourcing", "Legal process outsourcing"],
     metaDescription:
-      "Business process outsourcing from Total Data Limited: supply chain and logistics, finance and accounting, legal process and facility management in Nigeria.",
+      "Business Process Outsourcing from Total Data Limited: supply chain and logistics, finance and accounting, legal process and facility management in Nigeria.",
   },
   {
     slug: "recruitment-background-check",
-    name: "Recruitment and background checks",
+    name: "Recruitment and Background Checks",
     removes: "Sourcing, screening and pre-employment checks, so the person you hire is the person you interviewed.",
     lead:
       "From executive search to semi-skilled workforce recruitment, with a background check on every hire so nothing surprises you after the contract is signed.",
@@ -84,11 +84,11 @@ export const services: Service[] = [
     ],
     includes: ["Executive, professional and graduate recruitment", "Pre-employment background checks", "Cultural fit assessment"],
     metaDescription:
-      "Recruitment and pre-employment background checks from Total Data Limited: executive search, experienced hires, graduate trainees and workforce recruitment in Nigeria.",
+      "Recruitment and Background Checks from Total Data Limited: executive search, experienced hires, graduate trainees and workforce recruitment in Nigeria.",
   },
   {
     slug: "learning-and-development",
-    name: "Learning and development",
+    name: "Learning and Development",
     removes: "Leadership and skills programmes for the people we place and the people you already have.",
     lead:
       "Training built around your organisation's actual gaps, delivered in formats people turn up to. Leadership, technical and soft skills, with the outcome defined before the first session.",
@@ -99,11 +99,11 @@ export const services: Service[] = [
     ],
     includes: ["Leadership development", "Skills programmes", "Tailored organisational programmes"],
     metaDescription:
-      "Learning and development programmes from Total Data Limited: leadership, technical and soft skills training tailored to your organisation.",
+      "Learning and Development programmes from Total Data Limited: leadership, technical and soft skills training tailored to your organisation.",
   },
   {
     slug: "payroll-management",
-    name: "Payroll management",
+    name: "Payroll Management",
     removes: "PAYE, pension, HMO and every statutory remittance, on one calendar, every month.",
     lead:
       "Everyone paid accurately and on time, every deduction correct, every remittance made and evidenced. The part of the month that carries your personal compliance exposure, taken off your desk.",
@@ -114,11 +114,11 @@ export const services: Service[] = [
     ],
     includes: ["Payroll processing", "Statutory remittances: PAYE, pension, HMO", "Compliance and accuracy"],
     metaDescription:
-      "Payroll management from Total Data Limited: accurate, compliant payroll processing and statutory remittances for staff across Nigeria.",
+      "Payroll Management from Total Data Limited: accurate, compliant payroll processing and statutory remittances for staff across Nigeria.",
   },
   {
     slug: "business-advisory",
-    name: "Business advisory",
+    name: "Business Advisory",
     removes: "Strategy and operating advice from a firm that runs operations itself.",
     lead:
       "Advice from people who manage thousands of staff for other companies, on structure, compliance, succession, process and data protection.",
@@ -132,11 +132,11 @@ export const services: Service[] = [
     ],
     includes: ["Strategic advisory", "Growth and operating guidance"],
     metaDescription:
-      "Business advisory services from Total Data Limited: organisational structure, regulatory compliance, succession planning, process optimisation and data protection.",
+      "Business Advisory services from Total Data Limited: organisational structure, regulatory compliance, succession planning, process optimisation and data protection.",
   },
   {
     slug: "technology-solutions",
-    name: "Technology solutions",
+    name: "Technology Solutions",
     removes: "Software and process automation built around how your operation actually runs.",
     lead:
       "Custom software and automation from a team that also runs operations, so the tools fit the work rather than the other way round.",
@@ -146,7 +146,7 @@ export const services: Service[] = [
     ],
     includes: ["Software development", "Digital transformation"],
     metaDescription:
-      "Technology solutions from Total Data Limited: custom software development and process automation for Nigerian businesses.",
+      "Technology Solutions from Total Data Limited: custom software development and process automation for Nigerian businesses.",
   },
 ];
 
