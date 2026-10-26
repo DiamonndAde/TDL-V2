@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/layout/cta-band";
+import { BrochureButton } from "@/components/ui/brochure-button";
 import { PageHeader } from "@/components/layout/page-header";
 import { ServiceRowList } from "@/components/home/service-rows";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -17,7 +18,7 @@ export default function ServicesIndex() {
   return (
     <main id="main">
       <JsonLd include={["services"]} />
-      <PageHeader title="Seven things we take" accent="off your desk" lead={wordpressCopy.servicesSub} />
+      <PageHeader title="Seven things we take" accent="off your desk" lead={wordpressCopy.servicesSub} actions={<BrochureButton />} />
       <section aria-label="Our seven service lines" className="on-dark bg-charcoal">
         <div className="container-site section-y">
           <ServiceRowList as="h2" />

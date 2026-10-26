@@ -5,6 +5,7 @@ import { CtaBand } from "@/components/layout/cta-band";
 import { PageHeader } from "@/components/layout/page-header";
 import { Reveal } from "@/components/motion/reveal";
 import { FeatureCard } from "@/components/ui/feature-card";
+import { BrochureButton } from "@/components/ui/brochure-button";
 import { PartnerCta } from "@/components/ui/partner-cta";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -28,6 +29,7 @@ export function ServicePage({ service }: { service: Service }) {
         actions={
           <>
             <PartnerCta location="service_hero" service={scoped} />
+            <BrochureButton tone="light" />
             <Link href={`/become-a-client?service=${service.slug}`} className="font-bold text-accent-strong underline decoration-2 underline-offset-[6px]">
               Prefer a form?
             </Link>

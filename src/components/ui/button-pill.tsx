@@ -19,6 +19,7 @@ export function ButtonPill({
   size = "md",
   className = "",
   onClick,
+  download = false,
 }: {
   href: string;
   children: ReactNode;
@@ -29,6 +30,8 @@ export function ButtonPill({
   className?: string;
   /** Only from a client component (an analytics click, for instance). */
   onClick?: () => void;
+  /** A file download: a plain anchor with `download`, never a client-side navigation. */
+  download?: boolean;
 }) {
   const fill =
     tone === "accent"
@@ -56,6 +59,13 @@ export function ButtonPill({
   );
 
   const cls = `group inline-flex items-center rounded-full ${pill} ${className}`;
+  if (download) {
+    return (
+      <a href={href} download aria-label={ariaLabel} className={cls}>
+        {inner}
+      </a>
+    );
+  }
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} onClick={onClick} className={cls}>
