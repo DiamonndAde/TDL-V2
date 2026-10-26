@@ -39,7 +39,10 @@ export type DemoFrame =
   | "service:learning-and-development"
   | "service:payroll-management"
   | "service:business-advisory"
-  | "service:technology-solutions";
+  | "service:technology-solutions"
+  | "blog:what-to-look-for-in-an-hr-outsourcing-partner"
+  | "blog:running-payroll-across-more-than-one-state"
+  | "blog:why-background-checks-matter-before-an-offer";
 
 const FRAMES = "/placeholders/generated/frames";
 /**
@@ -65,6 +68,14 @@ export const frameImages: Partial<Record<DemoFrame, GeneratedImage>> = {
     scene: "a consultant and two business owners at a round table" },
   "service:technology-solutions": { file: `${FRAMES}/gen-service-technology-solutions.webp`, width: 1536, height: 1024, position: "55% 45%",
     scene: "a software team at a monitor and a laptop" },
+  // Blog covers (owner, 2026-10-26: "use the demo generated images for covers"): three of the six approved slider images,
+  // reused rather than generated, so no new spend. Presentation builds only, like every frame here.
+  "blog:what-to-look-for-in-an-hr-outsourcing-partner": { file: "/placeholders/generated/gen-meeting-standup.webp", width: 1536, height: 1024, position: "60% 40%",
+    scene: "three colleagues by a window going through a folder together" },
+  "blog:running-payroll-across-more-than-one-state": { file: "/placeholders/generated/gen-payroll-desk.webp", width: 1536, height: 1024, position: "35% 20%",
+    scene: "a woman checking figures on a printed sheet with a calculator" },
+  "blog:why-background-checks-matter-before-an-offer": { file: "/placeholders/generated/gen-hr-interview.webp", width: 1536, height: 1024, position: "45% 30%",
+    scene: "an interview across a desk, the interviewer taking notes" },
   // Portrait (1024x1536): the frame is 5:7 at lg and 4:5 on phones; a wide shot cropped to one person (round 1, rejected).
   why: { file: `${FRAMES}/gen-why-portrait.webp`, width: 1024, height: 1536, position: "50% 45%",
     scene: "two people in a client meeting at a small table, a printed proposal between them" },

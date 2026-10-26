@@ -31,7 +31,7 @@ export PLACEHOLDER_PRESENTATION_BUILD= NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POST
 WORK="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/tdl-verify-$$")"
 mkdir -p "$WORK"
 # Routes that exist so far; grows with docs/PLAN.md §8.
-ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /contact-us /become-a-client /careers /privacy-policy /cookies-policy /insights"
+ROUTES="/ /services /services/human-resources-outsourcing /services/payroll-management /services/technology-solutions /about-us /work /certifications /contact-us /become-a-client /careers /privacy-policy /cookies-policy /blog /blog/running-payroll-across-more-than-one-state"
 # The scroll test is the slowest step; one route per template is enough to catch a trap (2026-10-24: 7 min on 11 routes).
 SCROLL_ROUTES="/ /services /services/payroll-management /about-us /work /contact-us /become-a-client /privacy-policy"
 # Planned routes not built yet: the link check reports links to them as NOT YET instead of failing. Empty it as each lands.

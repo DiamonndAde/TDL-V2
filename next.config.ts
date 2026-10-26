@@ -96,7 +96,8 @@ const nextConfig: NextConfig = {
     return [
       // From v1 and the original site.
       { source: "/new-client", destination: "/become-a-client", permanent: true },
-      { source: "/Blog", destination: "/insights", permanent: true },
+      // The blog (TDL, 2026-10-26) replaces the /insights stub.
+      { source: "/insights", destination: "/blog", permanent: true },
       { source: "/index.html", destination: "/", permanent: true },
       // WordPress-era paths (docs/PLAN.md §2), in case anything was shared from the WordPress build.
       { source: "/about", destination: "/about-us", permanent: true },
@@ -104,7 +105,6 @@ const nextConfig: NextConfig = {
       { source: "/job-openings", destination: "/careers", permanent: true },
       { source: "/jobs", destination: "/careers", permanent: true },
       { source: "/contact", destination: "/contact-us", permanent: true },
-      { source: "/blog", destination: "/insights", permanent: true },
       // The address the brochure QR code carries (/contact-us). Temporary (307), because where it points depends
       // on whether public/brochure.pdf exists (TODO(client): Q32). src/lib/brochure.ts reads the same file.
       {

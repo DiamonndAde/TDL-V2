@@ -7,7 +7,7 @@ Checks, each printed ok/FAIL with the evidence:
   1. URLs: every route is served (200), its trailing-slash form 308s to it, every redirect in next.config.ts is a
      single 308 (or the 307 for /brochure) to a page that answers 200, and WordPress leftovers end in a clean 404.
   2. Sitemap, robots and noindex: the sitemap lists exactly the indexable routes as absolute https URLs; robots
-     points at it; /insights is noindex; a *.vercel.app host gets X-Robots-Tag: noindex, nofollow and the real host
+     points at it; the blog is indexable; a *.vercel.app host gets X-Robots-Tag: noindex, nofollow and the real host
      does not.
   3. JSON-LD and metadata: every block parses and holds no raw "<"; no @id appears twice on a page; Organization and
      LocalBusiness on every page; seven Service nodes on /services and exactly the matching one per service page;
@@ -70,11 +70,12 @@ def chain(path: str, limit: int = 5):
 
 SERVICES = ["human-resources-outsourcing", "business-process-outsourcing", "recruitment-background-check",
             "learning-and-development", "payroll-management", "business-advisory", "technology-solutions"]
+POSTS = ["what-to-look-for-in-an-hr-outsourcing-partner", "running-payroll-across-more-than-one-state", "why-background-checks-matter-before-an-offer"]
 INDEXABLE = ["/", "/services", "/work", "/about-us", "/careers", "/contact-us", "/become-a-client", "/certifications",
-             "/privacy-policy", "/cookies-policy"] + [f"/services/{s}" for s in SERVICES]
-ROUTES = INDEXABLE + ["/insights"]
-REDIRECTS = [("/new-client", "/become-a-client"), ("/new-client/", "/become-a-client"), ("/Blog", "/insights"),
-             ("/blog", "/insights"), ("/index.html", "/"), ("/about", "/about-us"), ("/career", "/careers"),
+             "/privacy-policy", "/cookies-policy", "/blog"] + [f"/services/{s}" for s in SERVICES] + [f"/blog/{p}" for p in POSTS]
+ROUTES = INDEXABLE
+REDIRECTS = [("/new-client", "/become-a-client"), ("/new-client/", "/become-a-client"), ("/Blog", "/blog"),
+             ("/insights", "/blog"), ("/index.html", "/"), ("/about", "/about-us"), ("/career", "/careers"),
              ("/job-openings", "/careers"), ("/jobs", "/careers"), ("/contact", "/contact-us")]
 
 # ---------------------------------------------------------------- 1. URLs
@@ -92,7 +93,7 @@ for src, dst in REDIRECTS:
 hops, st, final = chain("/brochure")
 check(len(hops) == 1 and hops[0][0] == 307 and st == 200, "/brochure → the current brochure by one 307",
       f"{hops} then {st} at {final}")
-for junk in ["/sample-page/", "/2025/04/22/hello-world/", "/category/uncategorized/", "/wp-admin/", "/services/nope"]:
+for junk in ["/sample-page/", "/2025/04/22/hello-world/", "/category/uncategorized/", "/wp-admin/", "/services/nope", "/blog/nope"]:
     hops, st, _ = chain(junk)
     check(st == 404, f"leftover {junk} ends in a clean 404", f"{len(hops)} hop(s) then {st}")
 
@@ -107,8 +108,8 @@ check(paths == sorted(INDEXABLE), "sitemap lists exactly the indexable routes",
 check(all(u.startswith("https://") for u in locs), "sitemap URLs are absolute https", locs[0] if locs else "none")
 _, _, robots = fetch("/robots.txt")
 check("Sitemap:" in robots and "sitemap.xml" in robots, "robots.txt points at the sitemap", robots.replace("\n", " | "))
-_, _, ins = fetch("/insights")
-check(re.search(r'<meta name="robots" content="[^"]*noindex', ins) is not None, "/insights is noindex")
+_, _, blog = fetch("/blog")
+check(re.search(r'<meta name="robots" content="[^"]*noindex', blog) is None, "/blog is indexable (no noindex)")
 _, h, _ = fetch("/", {"Host": "tdl-website-v2.vercel.app"})
 check("noindex" in (h.get("x-robots-tag") or ""), "*.vercel.app host gets X-Robots-Tag noindex", str(h.get("x-robots-tag")))
 _, h, _ = fetch("/", {"Host": "totaldatalimited.com"})
@@ -142,6 +143,8 @@ for route in ROUTES:
                 service_urls.append(re.sub(r"^https?://[^/]+", "", it.get("url", "")))
     dupes = sorted({i for i in ids if ids.count(i) > 1})
     need = {"Organization", "LocalBusiness"} <= set(types)
+    if route.startswith("/blog/") and "BlogPosting" not in types:
+        bad = True
     if route == "/services":
         svc_ok = len(service_urls) == 7
     elif route.startswith("/services/"):
@@ -224,7 +227,7 @@ with sync_playwright() as p:
         stops.append(f)
     names = [s["name"] for s in stops]
     check(all(s["ring"] for s in stops), "every header stop shows a focus ring", " | ".join(names))
-    check(any(n == "Blog" for n in names), "header: Blog is reachable", " | ".join(names))
+    check(any(n.lower() == "blog" for n in names), "header: Blog is reachable", " | ".join(names))
     check(not any("Paytrail" in n or "staff login" in n.lower() for n in names), "header: no Paytrail link (footer only, TDL 2026-10-26)", " | ".join(names))
     _, _, home = fetch("/")
     footer = home[home.find("<footer"):]

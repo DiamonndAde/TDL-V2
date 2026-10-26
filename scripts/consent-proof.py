@@ -30,7 +30,7 @@ ROUTES = ["/", "/careers", "/become-a-client", "/about-us", "/services", "/priva
 # The layout check runs on every route: the banner competes with each page's own LCP candidate, and the shortest
 # page lead decides whether it wins (/services did, 2026-10-24).
 LAYOUT_ROUTES = ["/", "/services", "/services/payroll-management", "/about-us", "/work", "/certifications", "/contact-us",
-                 "/become-a-client", "/careers", "/privacy-policy", "/cookies-policy", "/insights"]
+                 "/become-a-client", "/careers", "/privacy-policy", "/cookies-policy", "/blog", "/blog/running-payroll-across-more-than-one-state"]
 
 INIT = """
 window.__m = {lcp: 0, lcpEl: '', inBanner: false, cls: 0};

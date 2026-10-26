@@ -33,11 +33,11 @@ Smaller defaults, stated so you can veto them:
 | `/become-a-client` | old repo | Three-step enquiry form |
 | `/certifications` | `about.ts` | ISO badge, the two quality PDFs, reserved rows (Q19) |
 | `/privacy-policy`, `/cookies-policy` | `legal.ts` | Verbatim (Q25) |
-| `/insights` | old repo | Stub, `noindex`, not in the nav (Q13) |
+| `/blog`, `/blog/[slug]` | `src/lib/blog` (local files today) | Blog (TDL, 2026-10-26): index and articles, in the nav and sitemap; replaced the `/insights` stub |
 
 **Redirects:**
-- Ported: `/new-client` → `/become-a-client` (308), `/Blog` → `/insights` (308), `/index.html` → `/` (308), `/brochure` → `/brochure.pdf` (307).
-- New, cheap, for WordPress-era links: `/about` → `/about-us`, `/career` and `/job-openings` and `/jobs` → `/careers`, `/contact` → `/contact-us`, `/blog` → `/insights`. All 308.
+- Ported: `/new-client` → `/become-a-client` (308), `/Blog` → `/blog` (308, by `src/proxy.ts`), `/insights` → `/blog` (308), `/index.html` → `/` (308), `/brochure` → `/brochure.pdf` (307).
+- New, cheap, for WordPress-era links: `/about` → `/about-us`, `/career` and `/job-openings` and `/jobs` → `/careers`, `/contact` → `/contact-us`. All 308.
 
 Also: `sitemap.ts`, `robots.ts`, JSON-LD (Organization, LocalBusiness, one Service per service page), and `X-Robots-Tag: noindex` on `*.vercel.app`.
 

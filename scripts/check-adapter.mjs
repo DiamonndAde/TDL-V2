@@ -5,6 +5,9 @@
  * LINKS (audit §7)
  *   No link points at "#", the theme vendor's demo site or wp-admin.
  *
+ * BLOG SOURCE
+ *   Nothing outside src/lib/blog imports src/content/blog: pages read posts through getPosts and getPost.
+ *
  * CONTENT INTEGRITY
  *   Every testimonial excerpt is a verbatim substring of that person's full quote (never reworded, no typo
  *   "fixed" without Q22).
@@ -62,6 +65,17 @@ for (const full of files(join(root, "src"))) {
     const line = code.split("\n").findIndex((l) => re.test(l));
     if (line !== -1) failures.push(`${rel}:${line + 1} has ${what} (audit §7: no dead or foreign links)`);
   }
+}
+
+// ---------------------------------------------------------------- blog source boundary
+// Pages read posts only through src/lib/blog (getPosts, getPost), so a CMS can replace the local files without
+// touching a page (docs/DESIGN-DECISIONS.md, 2026-10-26).
+for (const full of files(join(root, "src"))) {
+  const rel = relative(root, full);
+  if (rel.startsWith(join("src", "lib", "blog") + sep) || rel.startsWith(join("src", "content", "blog") + sep)) continue;
+  const code = stripComments(readFileSync(full, "utf8"));
+  if (/from\s+["']@\/content\/blog/.test(code) || /from\s+["'][^"']*content\/blog/.test(code))
+    failures.push(`${rel} imports the blog content files directly; read posts through src/lib/blog (getPosts, getPost)`);
 }
 
 // ---------------------------------------------------------------- content integrity: quotes
@@ -154,7 +168,7 @@ if (failures.length) {
   console.error("Boundary check FAILED:\n" + failures.map((f) => "  " + f).join("\n"));
   process.exit(1);
 }
-const ran = ["no dead or foreign links", "every quote excerpt is verbatim"];
+const ran = ["no dead or foreign links", "blog posts only through src/lib/blog", "every quote excerpt is verbatim"];
 if (existsSync(join(root, ADAPTER_DIR))) ran.push("nothing outside the adapter is wired to a provider", "no candidate data is stored");
 if (existsSync(join(root, ANALYTICS_DIR))) ran.push("no visitor is identified", "analytics masking is in force");
 console.log(`Boundaries ok: ${ran.join(", ")}.`);

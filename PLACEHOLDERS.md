@@ -108,3 +108,13 @@ On Vercel: set `PLACEHOLDER_IMAGES=true` on the **Preview** environment (nothing
 ## Removing the mechanism for good
 
 Delete the demo entries in `src/content/placeholders.ts`, the demo branch in `<PhotoFrame>` and the hero slider, the guard block in `next.config.ts`, `public/placeholders/`, and this file.
+
+## Blog covers (owner, 2026-10-26: "use the demo generated images for covers")
+
+Three of the six approved slider images, reused rather than generated (no new spend), presentation builds only. A shipping build shows the brand panel (navy, the lime arc, a newspaper icon) in their place until TDL supplies photographs.
+
+| Frame | File | Scene |
+|---|---|---|
+| `blog:what-to-look-for-in-an-hr-outsourcing-partner` | `generated/gen-meeting-standup.webp` | Three colleagues by a window going through a folder together |
+| `blog:running-payroll-across-more-than-one-state` | `generated/gen-payroll-desk.webp` | A woman checking figures on a printed sheet with a calculator |
+| `blog:why-background-checks-matter-before-an-offer` | `generated/gen-hr-interview.webp` | An interview across a desk, the interviewer taking notes |

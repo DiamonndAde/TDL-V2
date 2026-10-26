@@ -22,7 +22,8 @@ from urllib.parse import urldefrag, urljoin, urlparse
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3131"
 PENDING = set(os.environ.get("PENDING_ROUTES", "").split())
 # Deliberate redirects (next.config.ts). Anything else that redirects is a fault.
-REDIRECTS = {"/new-client", "/Blog", "/blog", "/index.html", "/about", "/career", "/job-openings", "/jobs", "/contact", "/brochure"}
+# /blog is a page since 2026-10-26; leaving it here kept the crawl out of the blog.
+REDIRECTS = {"/new-client", "/Blog", "/insights", "/index.html", "/about", "/career", "/job-openings", "/jobs", "/contact", "/brochure"}
 fails, pending_hits = [], defaultdict(set)
 
 
