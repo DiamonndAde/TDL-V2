@@ -15,11 +15,12 @@ export function Analytics() {
 }
 
 /**
- * The cookie notice, only while analytics is off: with a key the consent banner (inside the runtime above) replaces
- * it, so a visitor never sees both. Its own chunk, loaded after hydration, so no route's first-load JS carries it.
+ * The cookie consent banner, in every build (TDL, 2026-10-26: "they mean the cookie consent pop-up"). Accept and
+ * Reject are recorded either way; Accept starts analytics only when a key exists (`Runtime` above). Its own chunk,
+ * loaded after hydration, so no route's first-load JS carries it.
  */
-const Notice = lazyGate(() => import("./cookie-notice"));
+const Banner = lazyGate(() => import("./consent-banner").then((m) => ({ default: m.ConsentBanner })));
 
-export function CookieNotice() {
-  return <LazyWhen enabled={!analyticsConfigured} component={Notice} />;
+export function ConsentPrompt() {
+  return <LazyWhen enabled component={Banner} />;
 }

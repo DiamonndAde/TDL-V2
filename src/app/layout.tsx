@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Lato, Space_Grotesk } from "next/font/google";
-import { Analytics, CookieNotice } from "@/components/layout/analytics";
+import { Analytics, ConsentPrompt } from "@/components/layout/analytics";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -60,8 +60,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <JsonLd />
         {/* Nothing at all without NEXT_PUBLIC_POSTHOG_KEY: no banner, no SDK, no request (AGENTS.md, Analytics). */}
         <Analytics />
-        {/* A simple notice while analytics is off; the consent banner replaces it when a key is set (TDL, 2026-10-26). */}
-        <CookieNotice />
+        {/* The cookie consent banner, in every build (TDL, 2026-10-26); Accept loads analytics only when a key is set. */}
+        <ConsentPrompt />
       </body>
     </html>
   );

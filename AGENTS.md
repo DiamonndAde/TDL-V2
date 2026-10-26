@@ -100,7 +100,8 @@ Buttons follow the WordPress pattern: a pill label with a separate round arrow (
 - The reduced-motion path is first-class.
 
 **Analytics** (ported unchanged in behaviour):
-- Off unless `NEXT_PUBLIC_POSTHOG_KEY` is set. No banner, no SDK, no request without it.
+- Off unless `NEXT_PUBLIC_POSTHOG_KEY` is set: no SDK and no request without it.
+- The cookie consent banner shows on first visit in every build (TDL, 2026-10-26): Accept and Reject with equal weight, a link to `/cookies-policy`, the choice remembered and changeable from the footer. Without a key, Accept only records the choice.
 - Consent first. Nobody is identified.
 - All inputs and text are masked in replay. Replay runs on `/careers` only, at a 5% sample.
 - The canary masking test must pass before a key is ever deployed.

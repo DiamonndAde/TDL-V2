@@ -36,7 +36,7 @@ echo "analytics-on build (key → local stub)…"
 stop_servers
 rc=0
 if npx next build >"$log" 2>&1; then
-  if [ "$which" != masking ]; then bash scripts/serve-and-run.sh python scripts/consent-proof.py "$(winpath "$out")" || rc=1; fi
+  if [ "$which" != masking ]; then CONSENT_KEY=1 bash scripts/serve-and-run.sh python scripts/consent-proof.py "$(winpath "$out")" || rc=1; fi
   if [ "$which" != consent ]; then bash scripts/serve-and-run.sh python scripts/masking-proof.py "$capture" || rc=1; fi
 else
   tail -25 "$log"; rc=1
@@ -46,4 +46,10 @@ echo "restoring the shipping build…"
 export NEXT_PUBLIC_POSTHOG_KEY= NEXT_PUBLIC_POSTHOG_HOST= NEXT_PUBLIC_ANALYTICS_REPLAY_SAMPLE= NEXT_PUBLIC_ANALYTICS_REPLAY_ENQUIRY=
 stop_servers
 npx next build >"$log" 2>&1 || { tail -25 "$log"; exit 1; }
+# The banner shows without a key too (TDL, 2026-10-26): the same proof on the shipping build, where Accept must only
+# record the choice and nothing may leave localhost.
+if [ "$which" != masking ]; then
+  echo "consent banner on the shipping build (no key)…"
+  CONSENT_KEY=0 bash scripts/serve-and-run.sh python scripts/consent-proof.py || rc=1
+fi
 exit "$rc"

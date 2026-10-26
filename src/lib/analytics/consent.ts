@@ -1,7 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { analyticsConfigured } from "./config";
 
 /**
  * The visitor's analytics choice. Three states: `pending` (never answered — the banner shows), `granted`,
@@ -71,7 +70,10 @@ export function useConsent(): Consent {
   return useSyncExternalStore(subscribe, read, () => "pending");
 }
 
-/** Whether the banner should be on screen: only when analytics exists at all and the visitor has not answered. */
+/**
+ * Whether the banner should be on screen: whenever the visitor has not answered. Since 2026-10-26 that is in every
+ * build, key or not (TDL); without a key the answer is recorded and nothing else happens.
+ */
 export function useShouldAskConsent(): boolean {
-  return useConsent() === "pending" && analyticsConfigured;
+  return useConsent() === "pending";
 }

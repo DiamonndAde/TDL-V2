@@ -2,8 +2,8 @@
  * Analytics configuration, read from the environment at build time.
  *
  * **Off unless a project key is set.** With `NEXT_PUBLIC_POSTHOG_KEY` empty — which is every environment until
- * TDL approves Q30 — `analyticsConfigured` is `false`, the consent banner does not render, the SDK chunk is
- * never fetched, and `track()` is a no-op. These are `NEXT_PUBLIC_` values, so they are inlined at build time
+ * TDL approves Q30 — `analyticsConfigured` is `false`, the SDK chunk is never fetched, and `track()` is a no-op.
+ * The consent banner still shows (TDL, 2026-10-26) and simply records the choice. These are `NEXT_PUBLIC_` values, so they are inlined at build time
  * and the bundler can drop the dead branches; there is no runtime cost to the off state.
  *
  * Region: EU by default (Frankfurt). PostHog's region is fixed when the project is created and cannot be changed

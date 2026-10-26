@@ -1,10 +1,10 @@
 """The consent banner, against the conditions it was approved under.
 
-Run twice against the same build — once with the banner showing, once after it has been dismissed — and
-compare both with the analytics-off baseline. Requires a build with NEXT_PUBLIC_POSTHOG_KEY set, served on
-3131, and a build without it for the baseline.
+Since 2026-10-26 the banner shows in every build (TDL: the cookie consent pop-up), so this runs against both:
+CONSENT_KEY=1 for a build with NEXT_PUBLIC_POSTHOG_KEY pointed at the local stub, CONSENT_KEY=0 for the shipping
+build with no key. scripts/analytics-proof.sh runs both.
 
-  bash scripts/serve-and-run.sh python scripts/consent-proof.py [outdir]
+  CONSENT_KEY=0 bash scripts/serve-and-run.sh python scripts/consent-proof.py [outdir]
 
 Checks:
   1. Layout: the banner shifts nothing (CLS) and does not become the LCP element, measured on a throttled
@@ -15,8 +15,10 @@ Checks:
      Space, focus is never moved automatically and never trapped.
   4. Screen reader: the banner is a labelled region with an accessible name, announced when it appears.
   5. axe-core with the banner showing, and again after dismissal.
+  6. Accept: without a key nothing leaves localhost (the choice is only recorded); with a key the SDK starts.
+     Either way the choice survives a reload, and the footer control reopens the banner.
 """
-import json, sys
+import json, os, sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -26,6 +28,8 @@ AXE = Path("node_modules/axe-core/axe.min.js")
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
       "Chrome/140.0.0.0 Safari/537.36")
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+KEY = os.environ.get("CONSENT_KEY", "1") == "1"
+print(f"Build under test: {'with' if KEY else 'without'} a PostHog key")
 ROUTES = ["/", "/careers", "/become-a-client", "/about-us", "/services", "/privacy-policy"]
 # The layout check runs on every route: the banner competes with each page's own LCP candidate, and the shortest
 # page lead decides whether it wins (/services did, 2026-10-24).
@@ -95,7 +99,6 @@ with sync_playwright() as p:
     pg.wait_for_timeout(1500)
     banner = pg.locator("section[aria-labelledby='consent-title']")
     check(banner.count() == 1, "banner present with a project key configured")
-    check(pg.locator("section[aria-label='Cookies']").count() == 0, "the cookie notice is replaced by the consent banner (never both)")
     accept = pg.get_by_role("button", name="Accept", exact=True)
     reject = pg.get_by_role("button", name="Reject", exact=True)
     check(accept.count() == 1 and reject.count() == 1, "both choices are buttons in the banner")
@@ -165,6 +168,36 @@ with sync_playwright() as p:
             check(not severe, f"{route} ({phase}) no serious/critical violations",
                   "; ".join(f"{v['id']}×{v['n']} {v['t'][0][:60]}" for v in severe))
             c2.close()
+
+    print("\n6. Accept, the SDK, and changing the choice")
+    c6 = b.new_context(viewport={"width": 1280, "height": 900}, user_agent=UA)
+    c6.add_init_script(INIT)
+    p6 = c6.new_page()
+    p6.goto(BASE + "/careers", wait_until="load")
+    p6.wait_for_timeout(1500)
+    sent = []
+    p6.on("request", lambda r: sent.append(r.url))
+    p6.get_by_role("button", name="Accept", exact=True).click()
+    p6.wait_for_timeout(5000)
+    offsite = [u for u in sent if not u.startswith(BASE)]
+    if KEY:
+        check(any("127.0.0.1:3132" in u for u in sent), "with a key, Accept starts analytics (requests reach the stub)", str(len(offsite)))
+    else:
+        check(not offsite and not any("posthog" in u.lower() for u in sent),
+              "without a key, Accept only records the choice: nothing leaves localhost, no SDK", "; ".join(offsite[:3]))
+    p6.reload(wait_until="load")
+    p6.wait_for_timeout(2500)
+    check(p6.locator("section[aria-labelledby='consent-title']").count() == 0, "the choice is remembered after a reload")
+    reopen = p6.get_by_role("button", name="Analytics choice (on)")
+    check(reopen.count() == 1, "the footer shows the choice and a control to change it")
+    if reopen.count():
+        reopen.click()
+        p6.wait_for_timeout(2500)
+        check(p6.locator("section[aria-labelledby='consent-title']").count() == 1, "the footer control reopens the banner")
+        p6.get_by_role("button", name="Reject", exact=True).click()
+        p6.wait_for_timeout(300)
+        check(p6.get_by_role("button", name="Analytics choice (off)").count() == 1, "Reject from the reopened banner is recorded")
+    c6.close()
 
     if OUT:
         ctx2 = mobile_ctx()

@@ -123,7 +123,7 @@ step "recruitment adapter: every branch against a stub (no credentials, no netwo
 step "hero slider: 6 s, crossfade, pause, hover/focus hold, Play override, keys, reduced motion, CLS, phone crop; typed H1; /brochure" \
       bash scripts/slider-proof.sh
 # Builds with a key pointed at the local PostHog stand-in (replay always sampled) and restores the shipping build.
-step "consent banner (CLS, LCP, equal weight, keyboard, screen reader, axe) and the canary masking test"       bash scripts/analytics-proof.sh both "$WORK"
+step "consent banner with and without a key (CLS, LCP, equal weight, keyboard, screen reader, axe, Accept) and the canary masking test"       bash scripts/analytics-proof.sh both "$WORK"
 
 summary
 exit $FAILED

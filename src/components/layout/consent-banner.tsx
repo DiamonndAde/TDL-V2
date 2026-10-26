@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { analyticsConfigured } from "@/lib/analytics/config";
 import { denyConsent, grantConsent, useShouldAskConsent } from "@/lib/analytics/consent";
 import { useAfterFirstPaint } from "@/lib/after-first-paint";
 
@@ -17,7 +16,8 @@ import { useAfterFirstPaint } from "@/lib/after-first-paint";
  *  - **Keyboard and screen reader**: a labelled region; focus is never moved or trapped; an `aria-live` line says it
  *    has appeared.
  *
- * Renders nothing without a project key, which is every environment until TDL approves Q30.
+ * Shown in every build since 2026-10-26 (TDL: the cookie consent pop-up). Without a project key the choice is simply
+ * recorded; Accept starts analytics only when a key exists (analytics-runtime.tsx).
  */
 export function ConsentBanner() {
   const asking = useShouldAskConsent();
@@ -32,7 +32,7 @@ export function ConsentBanner() {
     }
   }, [asking, painted, announced]);
 
-  if (!analyticsConfigured || !asking || !painted) return null;
+  if (!asking || !painted) return null;
 
   const choice =
     "rounded-full border-2 border-white bg-transparent px-6 py-2.5 font-bold text-white transition-colors duration-150 hover:bg-white hover:text-navy";

@@ -42,8 +42,8 @@ export const company = {
     x: "https://x.com/totaldataltd_",
     // TODO(client): Q4 — the old footer labelled this "Youtube"; it is a Facebook profile. Ask if a YouTube channel exists.
     facebook: "https://m.facebook.com/profile.php/?id=100083561119652",
-    // TODO(client): Q35 — TikTok profile URL to come (TDL, 2026-10-26). Empty means hidden: the footer and the JSON-LD
-    // leave out any empty link, so there is never a dead one.
+    // TODO(client): Q35 — TDL has no TikTok yet (2026-10-26). Not in the footer; the JSON-LD skips empty links. When it
+    // exists: set the URL here and add one line to the footer's Follow list (site-footer.tsx).
     tiktok: "",
   },
   /**
