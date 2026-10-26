@@ -43,6 +43,14 @@ export const company = {
     // TODO(client): Q4 — the old footer labelled this "Youtube"; it is a Facebook profile. Ask if a YouTube channel exists.
     facebook: "https://m.facebook.com/profile.php/?id=100083561119652",
   },
+  /**
+   * TDL's job groups, where openings are posted (TDL, 2026-10-26). On /careers and in the footer; both open in a new
+   * tab. Invite links only, with any sharing parameters (?s=…&p=…) stripped.
+   */
+  jobGroups: {
+    whatsapp: "https://chat.whatsapp.com/GGgkpb8pwKKSRjFck4jLh",
+    telegram: "https://t.me/+cKxbpmMEzbY3MTY0",
+  },
   siteUrl: "https://totaldatalimited.com",
   /**
    * The HRIS login for TDL's managed staff (Paytrail), given by TDL 2026-10-17 (Q31). Shown in the header and the

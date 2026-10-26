@@ -57,6 +57,8 @@ export function SiteFooter() {
             { href: company.social.x, label: "X", external: true },
             // TODO(client): Q4 — labelled Facebook because that is where it goes.
             { href: company.social.facebook, label: "Facebook", external: true },
+            { href: company.jobGroups.whatsapp, label: "WhatsApp job group", external: true },
+            { href: company.jobGroups.telegram, label: "Telegram job group", external: true },
           ]}
         />
       </div>

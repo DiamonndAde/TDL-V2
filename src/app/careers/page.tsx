@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { HeartHandshake, Sparkles, UserSearch } from "lucide-react";
+import { HeartHandshake, Send, Sparkles, UserSearch } from "lucide-react";
+import { company } from "@/content/facts";
 import { careers } from "@/content/about";
 import { ApplicationForm } from "@/components/careers/application-form";
 import { OpeningsLink } from "@/components/careers/openings-link";
@@ -7,9 +8,11 @@ import { CtaBand } from "@/components/layout/cta-band";
 import { PageHeader } from "@/components/layout/page-header";
 import { PageViewed } from "@/components/layout/page-viewed";
 import { Reveal } from "@/components/motion/reveal";
+import { ButtonPill } from "@/components/ui/button-pill";
 import { FeatureCard } from "@/components/ui/feature-card";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { WhatsAppMark } from "@/components/ui/whatsapp-mark";
 import { openingsLinkFor } from "@/lib/recruitment";
 
 export const metadata: Metadata = {
@@ -61,6 +64,25 @@ export default function CareersPage() {
           </div>
         </section>
       ) : null}
+
+      {/* TDL's job groups (2026-10-26). Links from facts.ts; both open in a new tab. Each accessible name starts with the
+          visible label (WCAG 2.5.3). */}
+      <section id="job-groups" aria-labelledby="job-groups-title" className="on-dark bg-charcoal">
+        <div className="container-site py-14 lg:py-16">
+          <SectionHeading id="job-groups-title" before="Join our" accent="job groups" onDark />
+          <p className="mt-5 max-w-[40rem] text-on-dark-muted">We post new openings in our WhatsApp and Telegram groups. Join either one to hear about roles as they come up.</p>
+          <div className="mt-8 flex flex-wrap gap-5">
+            <ButtonPill href={company.jobGroups.whatsapp} external ariaLabel="Join on WhatsApp: our job group (opens in a new tab)">
+              <WhatsAppMark />
+              Join on WhatsApp
+            </ButtonPill>
+            <ButtonPill href={company.jobGroups.telegram} external tone="light" ariaLabel="Join on Telegram: our job group (opens in a new tab)">
+              <Send size={18} aria-hidden="true" />
+              Join on Telegram
+            </ButtonPill>
+          </div>
+        </div>
+      </section>
 
       <section id="talent-pool" aria-labelledby="talent-pool-title" className="bg-mist">
         <div className="container-site section-y">
