@@ -42,6 +42,9 @@ export const company = {
     x: "https://x.com/totaldataltd_",
     // TODO(client): Q4 — the old footer labelled this "Youtube"; it is a Facebook profile. Ask if a YouTube channel exists.
     facebook: "https://m.facebook.com/profile.php/?id=100083561119652",
+    // TODO(client): Q35 — TikTok profile URL to come (TDL, 2026-10-26). Empty means hidden: the footer and the JSON-LD
+    // leave out any empty link, so there is never a dead one.
+    tiktok: "",
   },
   /**
    * TDL's job groups, where openings are posted (TDL, 2026-10-26). On /careers and in the footer; both open in a new

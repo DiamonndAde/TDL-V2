@@ -24,7 +24,7 @@ export function JsonLd({
     foundingDate: String(company.incorporated),
     email: company.email,
     telephone: company.phone,
-    sameAs: Object.values(company.social),
+    sameAs: Object.values(company.social).filter(Boolean),
     address: {
       "@type": "PostalAddress",
       streetAddress: company.address.street,

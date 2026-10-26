@@ -57,6 +57,7 @@ export function SiteFooter() {
             { href: company.social.x, label: "X", external: true },
             // TODO(client): Q4 — labelled Facebook because that is where it goes.
             { href: company.social.facebook, label: "Facebook", external: true },
+            { href: company.social.tiktok, label: "TikTok", external: true },
             { href: company.jobGroups.whatsapp, label: "WhatsApp job group", external: true },
             { href: company.jobGroups.telegram, label: "Telegram job group", external: true },
           ]}
@@ -88,7 +89,8 @@ function FooterList({ title, items }: { title: string; items: { href: string; la
     <div>
       <h2 className="text-base font-bold text-white">{title}</h2>
       <ul className="mt-5 space-y-2.5">
-        {items.map((i) => (
+        {/* An empty href is a link still to come (facts.ts, e.g. TikTok, Q35): left out, never rendered dead. */}
+        {items.filter((i) => i.href).map((i) => (
           <li key={i.href}>
             {i.external ? (
               <a href={i.href} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
